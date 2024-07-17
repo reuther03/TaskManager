@@ -1,18 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\Modules\TaskManager.Modules.Users.Api\TaskManager.Modules.Users.Api.csproj" />
       <ProjectReference Include="..\..\Shared\TaskManager.Shared.Infrastructure\TaskManager.Shared.Infrastructure.csproj" />
+      <ProjectReference Include="..\TaskManager.Modules.Users.Application\TaskManager.Modules.Users.Application.csproj" />
     </ItemGroup>
 
 </Project>

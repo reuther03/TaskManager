@@ -11,4 +11,12 @@
       <ProjectReference Include="..\TaskManager.Shared.Abstractions\TaskManager.Shared.Abstractions.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.6.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.6.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.6.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+    </ItemGroup>
+
 </Project>
