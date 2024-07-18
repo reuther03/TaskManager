@@ -28,4 +28,4 @@ foreach (var module in modules)
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
