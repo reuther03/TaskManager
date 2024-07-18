@@ -9,8 +9,10 @@ namespace TaskManager.Modules.Users.Api;
 
 public class UsersModule : IModule
 {
-    public string Name => nameof(UsersModule);
-    public string Path => "users-module";
+    public const string BasePath = "users-module";
+
+    public string Name { get; } = "Users";
+    public string Path => BasePath;
     public void Register(IServiceCollection services)
     {
         services
