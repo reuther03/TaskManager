@@ -5,5 +5,5 @@ namespace TaskManager.Modules.Users.Api.Controllers;
 internal class HomeController : BaseController
 {
     [HttpGet]
-    public ActionResult<string> Get() => "Users API";
+    public ActionResult<string> Get() => "User API";
 }

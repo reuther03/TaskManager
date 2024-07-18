@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Abstractions.Modules;
 using TaskManager.Infrastructure.Api;
+using TaskManager.Infrastructure.Postgres;
 using TaskManager.Infrastructure.Swagger;
 
 [assembly: InternalsVisibleTo("TaskManager.Bootstrapper")]
@@ -62,5 +63,19 @@ internal static class Extensions
         app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Task Manager API"); });
         app.UseRouting();
         return app;
+    }
+
+    public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
+    {
+        using var serviceProvider = services.BuildServiceProvider();
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        return configuration.GetOptions<T>(sectionName);
+    }
+
+    public static T GetOptions<T>(this IConfiguration configuration, string sectionName) where T : new()
+    {
+        var options = new T();
+        configuration.GetSection(sectionName).Bind(options);
+        return options;
     }
 }

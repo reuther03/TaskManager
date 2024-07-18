@@ -1,10 +1,12 @@
 using TaskManager.Bootstrapper;
 using TaskManager.Infrastructure;
+using TaskManager.Infrastructure.Modules;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
+builder.ConfigureModules();
 
 services.AddEndpointsApiExplorer();
 

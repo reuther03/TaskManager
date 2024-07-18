@@ -11,7 +11,7 @@ public class UsersModule : IModule
 {
     public const string BasePath = "users-module";
 
-    public string Name { get; } = "Users";
+    public string Name { get; } = "User";
     public string Path => BasePath;
     public void Register(IServiceCollection services)
     {
