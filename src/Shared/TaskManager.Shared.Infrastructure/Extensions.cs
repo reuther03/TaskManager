@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Abstractions.Modules;
 using TaskManager.Infrastructure.Api;
-using TaskManager.Infrastructure.Postgres;
 using TaskManager.Infrastructure.Services;
 using TaskManager.Infrastructure.Swagger;
 
@@ -38,6 +37,8 @@ internal static class Extensions
 
         services.AddSwagger();
         services.AddHostedService<AppInitializer>();
+        services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(assemblies.ToArray()); });
+
         services.AddControllers()
             .ConfigureApplicationPartManager(manager =>
             {

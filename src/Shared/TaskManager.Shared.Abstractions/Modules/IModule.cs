@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace TaskManager.Abstractions.Modules;
 
-public interface IModule
+public interface IModu
 {
     string Name { get; }
     string Path { get; }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace TaskManager.Infrastructure.Services;
 
@@ -9,7 +8,7 @@ internal class AppInitializer : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public AppInitializer(IServiceProvider serviceProvider, ILogger<AppInitializer> logger)
+    public AppInitializer(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }

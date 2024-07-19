@@ -5,7 +5,7 @@ namespace TaskManager.Bootstrapper;
 
 public static class ModuleLoader
 {
-    public static IList<Assembly> LoadAssemblies(IConfiguration configuration)
+    public static IList<Assembly> LoadAssemblies(IServiceCollection services, IConfiguration configuration)
     {
         const string modulesPath = "TaskManager.Modules.";
 

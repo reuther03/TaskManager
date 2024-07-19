@@ -10,7 +10,7 @@ builder.ConfigureModules();
 
 services.AddEndpointsApiExplorer();
 
-var assemblies = ModuleLoader.LoadAssemblies(configuration);
+var assemblies = ModuleLoader.LoadAssemblies(services, configuration);
 var modules = ModuleLoader.LoadModules(assemblies);
 
 services.AddInfrastructure(assemblies, modules);
@@ -27,6 +27,7 @@ foreach (var module in modules)
 {
     module.Use(app);
 }
+
 
 app.MapControllers();
 

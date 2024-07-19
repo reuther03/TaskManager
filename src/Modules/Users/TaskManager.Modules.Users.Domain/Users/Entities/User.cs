@@ -11,4 +11,17 @@ public class User : AggregateRoot<UserId>
 
     //lista taskow przpisana z wszystkich grup
     //lista grup
+    protected User()
+    {
+    }
+
+    private User(UserId id, string fullName, string email, string password) : base(id)
+    {
+        FullName = fullName;
+        Email = email;
+        Password = password;
+    }
+
+    public static User Create(string fullName, string email, string password)
+        => new User(UserId.New(), fullName, email, password);
 }

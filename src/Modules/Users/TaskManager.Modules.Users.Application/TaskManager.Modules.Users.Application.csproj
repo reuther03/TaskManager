@@ -10,8 +10,4 @@
       <ProjectReference Include="..\TaskManager.Modules.Users.Domain\TaskManager.Modules.Users.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Users\" />
-    </ItemGroup>
-
 </Project>

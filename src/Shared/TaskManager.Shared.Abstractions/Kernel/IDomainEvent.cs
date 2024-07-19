@@ -1,5 +1,5 @@
-﻿namespace TaskManager.Abstractions.Kernel;
+﻿using MediatR;
 
-public interface IDomainEvent
-{
-}
+namespace TaskManager.Abstractions.Kernel;
+
+public interface IDomainEvent : INotification;
