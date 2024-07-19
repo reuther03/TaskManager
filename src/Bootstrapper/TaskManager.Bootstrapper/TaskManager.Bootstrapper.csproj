@@ -15,7 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Modules\TaskManager.Modules.Users.Api\TaskManager.Modules.Users.Api.csproj" />
       <ProjectReference Include="..\..\Modules\Users\TaskManager.Modules.Users.Api\TaskManager.Modules.Users.Api.csproj" />
       <ProjectReference Include="..\..\Shared\TaskManager.Shared.Infrastructure\TaskManager.Shared.Infrastructure.csproj" />
     </ItemGroup>

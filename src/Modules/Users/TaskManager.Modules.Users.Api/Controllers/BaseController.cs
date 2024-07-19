@@ -6,5 +6,4 @@ namespace TaskManager.Modules.Users.Api.Controllers;
 [Route(UsersModule.BasePath + "/[controller]")]
 internal abstract class BaseController : ControllerBase
 {
-
 }

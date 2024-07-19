@@ -12,7 +12,7 @@ using TaskManager.Modules.Users.Infrastructure.Database;
 namespace TaskManager.Modules.Users.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20240718231343_Initial")]
+    [Migration("20240719002250_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

@@ -13,6 +13,7 @@ public class UsersModule : IModule
 
     public string Name { get; } = "User";
     public string Path => BasePath;
+
     public void Register(IServiceCollection services)
     {
         services
