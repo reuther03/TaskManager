@@ -1,6 +1,5 @@
 using TaskManager.Bootstrapper;
 using TaskManager.Infrastructure;
-using TaskManager.Infrastructure.Auth;
 using TaskManager.Infrastructure.Modules;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,9 +13,7 @@ services.AddEndpointsApiExplorer();
 var assemblies = ModuleLoader.LoadAssemblies(services, configuration);
 var modules = ModuleLoader.LoadModules(assemblies);
 
-services.AddInfrastructure(assemblies, modules);
-
-services.Configure<JwtOptions>(configuration.GetSection("jwt"));
+services.AddInfrastructure(assemblies, modules, configuration);
 
 foreach (var module in modules)
 {

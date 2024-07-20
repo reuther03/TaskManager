@@ -18,7 +18,6 @@ public class JwtProvider : IJwtProvider
 
     public string GenerateToken(string userId, string email)
     {
-        var key = _jwtOptions.SecretKey;
         var claims = new Claim[]
         {
             new(JwtRegisteredClaimNames.Sub, userId),

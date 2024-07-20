@@ -16,12 +16,13 @@ namespace TaskManager.Infrastructure;
 
 internal static class Extensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<Assembly> assemblies, IList<IModule> modules)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<Assembly> assemblies, IList<IModule> modules,
+        IConfiguration configuration)
     {
         var disabledModules = new List<string>();
-        using (var serviceProvider = services.BuildServiceProvider())
+        // using (var serviceProvider = services.BuildServiceProvider())
         {
-            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            // var configuration = serviceProvider.GetRequiredService<IConfiguration>();
             foreach (var (key, value) in configuration.AsEnumerable())
             {
                 if (!key.Contains(":module:enabled"))
@@ -37,7 +38,7 @@ internal static class Extensions
         }
 
         services.AddSwagger();
-        services.AddAuth();
+        services.AddAuth(configuration);
         services.AddHostedService<AppInitializer>();
         services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(assemblies.ToArray()); });
 

@@ -5,9 +5,9 @@ namespace TaskManager.Modules.Users.Domain.Users.Entities;
 
 public class User : AggregateRoot<UserId>
 {
-    public string FullName { get; private set; }
-    public string Email { get; private set; }
-    public string Password { get; private set; }
+    public FullName FullName { get; private set; }
+    public Email Email { get; private set; }
+    public Password Password { get; private set; }
 
     //lista taskow przpisana z wszystkich grup
     //lista grup
@@ -15,7 +15,7 @@ public class User : AggregateRoot<UserId>
     {
     }
 
-    private User(UserId id, string fullName, string email, string password) : base(id)
+    private User(UserId id, FullName fullName, Email email, Password password) : base(id)
     {
         FullName = fullName;
         Email = email;

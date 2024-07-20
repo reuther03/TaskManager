@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TaskManager.Abstractions.Auth;
@@ -8,9 +9,10 @@ namespace TaskManager.Infrastructure.Auth;
 
 public static class Extensions
 {
-    public static IServiceCollection AddAuth(this IServiceCollection services)
+    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
-        var jwtOptions = services.GetOptions<JwtOptions>("jwt");
+        services.Configure<JwtOptions>(configuration.GetRequiredSection(JwtOptions.SectionName));
+        var jwtOptions = services.GetOptions<JwtOptions>(JwtOptions.SectionName);
         services.AddSingleton<IJwtProvider, JwtProvider>();
 
 
@@ -18,8 +20,8 @@ public static class Extensions
         {
             ValidateIssuer = true,
             ValidateAudience = true,
-            ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
             ValidIssuer = jwtOptions.Issuer,
             ValidAudience = jwtOptions.Audience,
         };

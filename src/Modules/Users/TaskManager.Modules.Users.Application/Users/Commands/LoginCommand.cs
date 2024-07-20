@@ -24,7 +24,7 @@ public record LoginCommand(string Email, string Password) : ICommand<AccessToken
             if (user is null)
                 return Result.Unauthorized<AccessToken>("Authentication failed");
 
-            if (user.Password != request.Password)
+            if (!user.Password.Verify(request.Password))
                 return Result.Unauthorized<AccessToken>("Authentication failed");
 
             var token = AccessToken.Create(_jwtProvider.GenerateToken(user.Id.ToString(), user.Email), user.Id, user.Email);
