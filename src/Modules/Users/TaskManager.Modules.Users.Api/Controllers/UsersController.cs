@@ -19,4 +19,11 @@ internal class UsersController : BaseController
         var result = await _sender.Send(request, cancellationToken);
         return Ok(result);
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginCommand request, CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
 }

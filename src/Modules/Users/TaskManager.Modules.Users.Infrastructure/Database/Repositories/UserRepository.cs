@@ -19,6 +19,9 @@ internal class UserRepository : IUserRepository
     public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
         => await _context.Users.AnyAsync(x => x.Id.Equals(id), cancellationToken);
 
+    public Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+        => _context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+
     public async Task AddAsync(User user, CancellationToken cancellationToken = default)
         => await _context.AddAsync(user, cancellationToken);
 

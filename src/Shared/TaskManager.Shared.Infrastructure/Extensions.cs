@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Abstractions.Modules;
 using TaskManager.Infrastructure.Api;
+using TaskManager.Infrastructure.Auth;
 using TaskManager.Infrastructure.Services;
 using TaskManager.Infrastructure.Swagger;
 
@@ -36,6 +37,7 @@ internal static class Extensions
         }
 
         services.AddSwagger();
+        services.AddAuth();
         services.AddHostedService<AppInitializer>();
         services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(assemblies.ToArray()); });
 
@@ -64,7 +66,9 @@ internal static class Extensions
     {
         app.UseSwagger();
         app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Task Manager API"); });
+        app.UseAuthentication();
         app.UseRouting();
+        app.UseAuthorization();
         return app;
     }
 
