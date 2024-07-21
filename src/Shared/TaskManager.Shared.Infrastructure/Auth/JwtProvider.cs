@@ -21,7 +21,7 @@ public class JwtProvider : IJwtProvider
         var claims = new Claim[]
         {
             new(JwtRegisteredClaimNames.Sub, userId),
-            new(JwtRegisteredClaimNames.UniqueName, userId.ToString()),
+            new(JwtRegisteredClaimNames.UniqueName, userId),
             new(JwtRegisteredClaimNames.Email, email)
         };
 

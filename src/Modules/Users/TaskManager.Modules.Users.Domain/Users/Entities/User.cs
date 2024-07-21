@@ -1,11 +1,12 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives;
+using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Modules.Users.Domain.Users.ValueObjects;
 
 namespace TaskManager.Modules.Users.Domain.Users.Entities;
 
 public class User : AggregateRoot<UserId>
 {
-    public FullName FullName { get; private set; }
+    public Name Name { get; private set; }
     public Email Email { get; private set; }
     public Password Password { get; private set; }
 
@@ -15,9 +16,9 @@ public class User : AggregateRoot<UserId>
     {
     }
 
-    private User(UserId id, FullName fullName, Email email, Password password) : base(id)
+    private User(UserId id, Name name, Email email, Password password) : base(id)
     {
-        FullName = fullName;
+        Name = name;
         Email = email;
         Password = password;
     }

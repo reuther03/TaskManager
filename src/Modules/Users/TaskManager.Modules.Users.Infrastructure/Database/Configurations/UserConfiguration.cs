@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Modules.Users.Domain.Users.Entities;
 using TaskManager.Modules.Users.Domain.Users.ValueObjects;
 
@@ -14,9 +15,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(x => x.Value, x => UserId.From(x))
             .ValueGeneratedNever();
 
-        builder.Property(x => x.FullName)
+        builder.Property(x => x.Name)
             .HasMaxLength(100)
-            .HasConversion(x => x.Value, x => new FullName(x))
+            .HasConversion(x => x.Value, x => new Name(x))
             .IsRequired();
 
         builder.Property(x => x.Email)

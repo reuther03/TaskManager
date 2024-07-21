@@ -1,4 +1,5 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives.Result;
+using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Modules.Users.Application.Abstractions.Database.Repositories;
 using TaskManager.Modules.Users.Domain.Users.Entities;
@@ -25,7 +26,7 @@ public record SignUpCommand(string FullName, string Email, string Password) : IC
                 return Result<Guid>.BadRequest("User with this email already exists.");
             }
 
-            var fullName = new FullName(request.FullName);
+            var fullName = new Name(request.FullName);
             var email = new Email(request.Email);
             var password = UserPassword.Create(request.Password);
 
