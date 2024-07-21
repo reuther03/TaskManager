@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TaskManager.Modules.Tasks.Infrastructure\TaskManager.Modules.Tasks.Infrastructure.csproj" />
+      <ProjectReference Include="..\TaskManager.Modules.Managment.Domain\TaskManager.Modules.Managment.Domain.csproj" />
     </ItemGroup>
 
 </Project>

@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Shared\TaskManager.Shared.Abstractions\TaskManager.Shared.Abstractions.csproj" />
-      <ProjectReference Include="..\..\Users\TaskManager.Modules.Users.Domain\TaskManager.Modules.Users.Domain.csproj" />
     </ItemGroup>
 
 </Project>

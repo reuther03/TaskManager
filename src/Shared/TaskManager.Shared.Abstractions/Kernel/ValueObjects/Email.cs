@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 using TaskManager.Abstractions.Exception;
 using TaskManager.Abstractions.Kernel.Primitives;
 
-namespace TaskManager.Modules.Users.Domain.Users.ValueObjects;
+namespace TaskManager.Abstractions.Kernel.ValueObjects;
 
 public sealed partial record Email : ValueObject
 {

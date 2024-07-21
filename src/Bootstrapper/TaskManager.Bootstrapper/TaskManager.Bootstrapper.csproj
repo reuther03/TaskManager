@@ -16,7 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Modules\Groups\TaskManager.Modules.Groups.Api\TaskManager.Modules.Groups.Api.csproj" />
-      <ProjectReference Include="..\..\Modules\Tasks\TaskManager.Modules.Tasks.Api\TaskManager.Modules.Tasks.Api.csproj" />
+      <ProjectReference Include="..\..\Modules\Managment\TaskManager.Modules.Managment.Api\TaskManager.Modules.Managment.Api.csproj" />
       <ProjectReference Include="..\..\Modules\Users\TaskManager.Modules.Users.Api\TaskManager.Modules.Users.Api.csproj" />
       <ProjectReference Include="..\..\Shared\TaskManager.Shared.Infrastructure\TaskManager.Shared.Infrastructure.csproj" />
     </ItemGroup>
