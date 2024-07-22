@@ -28,7 +28,7 @@ internal class InternalControllerFeatureProvider : ControllerFeatureProvider
             return false;
         }
 
-        return typeInfo.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase) ||
+        return typeInfo.Name.EndsWith("Controllers", StringComparison.OrdinalIgnoreCase) ||
             typeInfo.IsDefined(typeof(ControllerAttribute));
     }
 }

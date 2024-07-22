@@ -1,6 +1,6 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives;
 
-namespace TaskManager.Modules.Users.Domain.Users.ValueObjects;
+namespace TaskManager.Abstractions.Kernel.ValueObjects.User;
 
 public record UserId : EntityId
 {

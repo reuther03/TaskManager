@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskManager.Abstractions.Kernel.ValueObjects;
+using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Modules.Users.Domain.Users.Entities;
 using TaskManager.Modules.Users.Domain.Users.ValueObjects;
 

@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Shared\TaskManager.Shared.Infrastructure\TaskManager.Shared.Infrastructure.csproj" />
-      <ProjectReference Include="..\TaskManager.Modules.Managment.Application\TaskManager.Modules.Managment.Application.csproj" />
+      <ProjectReference Include="..\TaskManager.Modules.Management.Application\TaskManager.Modules.Management.Application.csproj" />
     </ItemGroup>
 
 </Project>

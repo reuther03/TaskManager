@@ -1,9 +1,9 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.Kernel.ValueObjects;
+using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Modules.Users.Application.Abstractions.Database.Repositories;
 using TaskManager.Modules.Users.Domain.Users.Entities;
-using TaskManager.Modules.Users.Domain.Users.ValueObjects;
 using UserPassword = TaskManager.Modules.Users.Domain.Users.ValueObjects.Password;
 
 namespace TaskManager.Modules.Users.Application.Users.Commands;

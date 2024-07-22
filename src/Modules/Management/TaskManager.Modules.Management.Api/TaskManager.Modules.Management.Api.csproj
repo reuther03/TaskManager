@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\TaskManager.Modules.Management.Infrastructure\TaskManager.Modules.Management.Infrastructure.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="module.management.json" />
+        <Content Include="module.management.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+</Project>

@@ -1,5 +1,6 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives;
 using TaskManager.Abstractions.Kernel.ValueObjects;
+using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Modules.Users.Domain.Users.ValueObjects;
 
 namespace TaskManager.Modules.Users.Domain.Users.Entities;

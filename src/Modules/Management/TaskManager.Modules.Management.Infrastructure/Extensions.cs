@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace TaskManager.Modules.Managment.Infrastructure;
+namespace TaskManager.Modules.Management.Infrastructure;
 
 public static class Extensions
 {

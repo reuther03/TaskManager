@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Abstractions.Modules;
-using TaskManager.Modules.Users.Application;
+using TaskManager.Modules.Management.Application;
+using TaskManager.Modules.Management.Infrastructure;
 using TaskManager.Modules.Users.Domain;
-using TaskManager.Modules.Users.Infrastructure;
 
-namespace TaskManager.Modules.Users.Api;
+namespace TaskManager.Modules.Management.Api;
 
-public class UsersModule : IModule
+internal class ManagementModule : IModule
 {
-    public const string BasePath = "users-module";
+    public const string BasePath = "managements-module";
 
-    public string Name { get; } = "Users";
+    public string Name { get; } = "Managements";
     public string Path => BasePath;
 
     public void Register(IServiceCollection services)

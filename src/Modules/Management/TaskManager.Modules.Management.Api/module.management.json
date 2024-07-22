@@ -1,0 +1,8 @@
+﻿{
+    "management": {
+        "module": {
+            "name": "Management",
+            "enabled": true
+        }
+    }
+}

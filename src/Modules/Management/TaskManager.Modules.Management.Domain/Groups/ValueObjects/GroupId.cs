@@ -1,6 +1,6 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives;
 
-namespace TaskManager.Modules.Managment.Domain.Groups.ValueObjects;
+namespace TaskManager.Modules.Management.Domain.Groups.ValueObjects;
 
 public record GroupId : EntityId
 {
