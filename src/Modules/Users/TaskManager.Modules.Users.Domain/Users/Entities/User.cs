@@ -11,8 +11,6 @@ public class User : AggregateRoot<UserId>
     public Email Email { get; private set; }
     public Password Password { get; private set; }
 
-    //lista taskow przpisana z wszystkich grup
-    //lista grup
     protected User()
     {
     }

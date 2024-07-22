@@ -5,7 +5,7 @@ using TaskManager.Modules.Management.Domain.Groups.ValueObjects;
 
 namespace TaskManager.Modules.Management.Domain.Groups.Entities;
 
-public class GroupTask : Entity<Guid>
+public class TeamTask : Entity<Guid>
 {
     public Name TaskName { get; private set; }
     public Description Description { get; private set; }
@@ -14,11 +14,11 @@ public class GroupTask : Entity<Guid>
     public bool Priority { get; private set; }
     public TaskProgress Progress { get; private set; }
 
-    protected GroupTask()
+    protected TeamTask()
     {
     }
 
-    public GroupTask(Guid id, Name taskName, Description description, DateTime createdAt, DateTime deadline,
+    public TeamTask(Guid id, Name taskName, Description description, DateTime createdAt, DateTime deadline,
         bool priority, TaskProgress progress) : base(id)
     {
         TaskName = taskName;
@@ -29,10 +29,10 @@ public class GroupTask : Entity<Guid>
         Progress = progress;
     }
 
-    public static GroupTask Create(Name taskName, Description description, DateTime deadline,
+    public static TeamTask Create(Name taskName, Description description, DateTime deadline,
         bool priority)
     {
-        var groupTask = new GroupTask(Guid.NewGuid(), taskName, description, DateTime.Now, deadline, priority, TaskProgress.DoTo);
+        var groupTask = new TeamTask(Guid.NewGuid(), taskName, description, DateTime.Now, deadline, priority, TaskProgress.ToDo);
 
         if (deadline < DateTime.Now)
         {

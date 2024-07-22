@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Abstractions.Modules;
 using TaskManager.Modules.Management.Application;
+using TaskManager.Modules.Management.Domain;
 using TaskManager.Modules.Management.Infrastructure;
-using TaskManager.Modules.Users.Domain;
 
 namespace TaskManager.Modules.Management.Api;
 

@@ -2,7 +2,7 @@
 
 public enum TaskProgress
 {
-    DoTo = 0,
+    ToDo = 0,
     InProgress = 1,
     Completed = 2
 }
