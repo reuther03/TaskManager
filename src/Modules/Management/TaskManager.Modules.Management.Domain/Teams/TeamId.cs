@@ -1,6 +1,6 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives;
 
-namespace TaskManager.Modules.Management.Domain.Groups.ValueObjects;
+namespace TaskManager.Modules.Management.Domain.Teams;
 
 public record TeamId : EntityId
 {
@@ -13,8 +13,7 @@ public record TeamId : EntityId
     public static TeamId From(string value) => new(Guid.Parse(value));
 
     public static implicit operator Guid(TeamId teamId) => teamId.Value;
-    public static implicit operator TeamId(Guid userId) => new(userId);
-
+    public static implicit operator TeamId(Guid teamId) => new(teamId);
     public override string ToString() => Value.ToString();
 
     protected override IEnumerable<object> GetAtomicValues()

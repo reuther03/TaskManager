@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Modules.Management.Domain.Groups.ValueObjects;
+﻿namespace TaskManager.Modules.Management.Domain.TaskItems;
 
 public enum TaskProgress
 {

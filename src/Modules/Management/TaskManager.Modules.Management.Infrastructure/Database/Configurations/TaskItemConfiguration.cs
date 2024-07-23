@@ -1,19 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskManager.Abstractions.Kernel.ValueObjects;
-using TaskManager.Modules.Management.Domain.Groups.Entities;
-using TaskManager.Modules.Management.Domain.Groups.ValueObjects;
+using TaskManager.Modules.Management.Domain.TaskItems;
 
 namespace TaskManager.Modules.Management.Infrastructure.Database.Configurations;
 
-public class TeamTaskConfiguration : IEntityTypeConfiguration<TeamTask>
+public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
 {
-    public void Configure(EntityTypeBuilder<TeamTask> builder)
+    public void Configure(EntityTypeBuilder<TaskItem> builder)
     {
-        builder.ToTable("Tasks");
+        builder.ToTable("TaskItems");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)
+            .HasConversion(x => x.Value, x => new TaskItemId(x))
             .ValueGeneratedNever();
 
         builder.Property(x => x.TaskName)

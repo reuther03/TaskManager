@@ -1,7 +1,7 @@
 ﻿using TaskManager.Abstractions.Exception;
 using TaskManager.Abstractions.Kernel.Primitives;
 
-namespace TaskManager.Modules.Management.Domain.Groups.ValueObjects;
+namespace TaskManager.Modules.Management.Domain.TaskItems;
 
 public record  Description : ValueObject
 {

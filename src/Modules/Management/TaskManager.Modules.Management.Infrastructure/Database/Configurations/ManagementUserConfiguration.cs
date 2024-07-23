@@ -2,15 +2,15 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Abstractions.Kernel.ValueObjects.User;
-using TaskManager.Modules.Management.Domain.Groups.Entities;
+using TaskManager.Modules.Management.Domain.ManagementUsers;
 
 namespace TaskManager.Modules.Management.Infrastructure.Database.Configurations;
 
-public class TeamUserConfiguration : IEntityTypeConfiguration<TeamUser>
+public class ManagementUserConfiguration : IEntityTypeConfiguration<ManagementUser>
 {
-    public void Configure(EntityTypeBuilder<TeamUser> builder)
+    public void Configure(EntityTypeBuilder<ManagementUser> builder)
     {
-        builder.ToTable("TeamUsers");
+        builder.ToTable("ManagementUser");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)

@@ -2,18 +2,18 @@
 using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Abstractions.Kernel.ValueObjects.User;
 
-namespace TaskManager.Modules.Management.Domain.Groups.Entities;
+namespace TaskManager.Modules.Management.Domain.ManagementUsers;
 
-public class TeamUser : AggregateRoot<UserId>
+public class ManagementUser : AggregateRoot<UserId>
 {
     public Name FullName { get; private set; }
     public Email Email { get; private set; }
 
-    protected TeamUser()
+    protected ManagementUser()
     {
     }
 
-    public TeamUser(Guid id, Name fullName, Email email) : base(id)
+    public ManagementUser(Guid id, Name fullName, Email email) : base(id)
     {
         FullName = fullName;
         Email = email;

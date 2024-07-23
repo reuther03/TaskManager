@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedManagements : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,20 +16,7 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 name: "management");
 
             migrationBuilder.CreateTable(
-                name: "Teams",
-                schema: "management",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    TeamName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teams", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
+                name: "ManagementUser",
                 schema: "management",
                 columns: table => new
                 {
@@ -39,11 +26,11 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_ManagementUser", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "TaskItems",
                 schema: "management",
                 columns: table => new
                 {
@@ -53,14 +40,41 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Deadline = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Priority = table.Column<bool>(type: "boolean", nullable: false),
-                    Progress = table.Column<int>(type: "integer", nullable: false),
-                    TeamId = table.Column<Guid>(type: "uuid", nullable: true)
+                    Progress = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamTasks", x => x.Id);
+                    table.PrimaryKey("PK_TaskItems", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Teams",
+                schema: "management",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teams", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamManagementUserIds",
+                schema: "management",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamManagementUserIds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TeamTasks_Teams_TeamId",
+                        name: "FK_TeamManagementUserIds_Teams_TeamId",
                         column: x => x.TeamId,
                         principalSchema: "management",
                         principalTable: "Teams",
@@ -69,21 +83,21 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TeamUserIds",
+                name: "TeamTaskIds",
                 schema: "management",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserIds1 = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserIds = table.Column<Guid>(type: "uuid", nullable: false)
+                    TeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TaskItemId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamUserIds", x => x.Id);
+                    table.PrimaryKey("PK_TeamTaskIds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TeamUserIds_Teams_UserIds1",
-                        column: x => x.UserIds1,
+                        name: "FK_TeamTaskIds_Teams_TeamId",
+                        column: x => x.TeamId,
                         principalSchema: "management",
                         principalTable: "Teams",
                         principalColumn: "Id",
@@ -91,31 +105,35 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeamTasks_TeamId",
+                name: "IX_TeamManagementUserIds_TeamId",
                 schema: "management",
-                table: "Tasks",
+                table: "TeamManagementUserIds",
                 column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeamUserIds_UserIds1",
+                name: "IX_TeamTaskIds_TeamId",
                 schema: "management",
-                table: "TeamUserIds",
-                column: "UserIds1");
+                table: "TeamTaskIds",
+                column: "TeamId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Tasks",
+                name: "ManagementUser",
                 schema: "management");
 
             migrationBuilder.DropTable(
-                name: "TeamUserIds",
+                name: "TaskItems",
                 schema: "management");
 
             migrationBuilder.DropTable(
-                name: "Users",
+                name: "TeamManagementUserIds",
+                schema: "management");
+
+            migrationBuilder.DropTable(
+                name: "TeamTaskIds",
                 schema: "management");
 
             migrationBuilder.DropTable(
