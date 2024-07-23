@@ -16,7 +16,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(x => x.Value, x => UserId.From(x))
             .ValueGeneratedNever();
 
-        builder.Property(x => x.Name)
+        builder.Property(x => x.FullName)
             .HasMaxLength(100)
             .HasConversion(x => x.Value, x => new Name(x))
             .IsRequired();

@@ -43,7 +43,7 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
 
             ownedBuilder.Property(x => x.Value)
                 .ValueGeneratedNever()
-                .HasColumnName("TaskItemId"); // Ensure this matches the database column
+                .HasColumnName("TaskItemId");
 
             builder.Metadata.FindNavigation(nameof(Team.TaskItemIds))!
                 .SetPropertyAccessMode(PropertyAccessMode.Field);

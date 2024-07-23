@@ -1,4 +1,6 @@
-﻿using TaskManager.Abstractions.Kernel.Primitives.Result;
+﻿using MediatR;
+using TaskManager.Abstractions.Events;
+using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
@@ -13,10 +15,12 @@ public record SignUpCommand(string FullName, string Email, string Password) : IC
     internal sealed class Handler : ICommandHandler<SignUpCommand, Guid>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IPublisher _publisher;
 
-        public Handler(IUserRepository userRepository)
+        public Handler(IUserRepository userRepository, IPublisher publisher)
         {
             _userRepository = userRepository;
+            _publisher = publisher;
         }
 
         public async Task<Result<Guid>> Handle(SignUpCommand request, CancellationToken cancellationToken)
@@ -26,14 +30,19 @@ public record SignUpCommand(string FullName, string Email, string Password) : IC
                 return Result<Guid>.BadRequest("User with this email already exists.");
             }
 
-            var fullName = new Name(request.FullName);
-            var email = new Email(request.Email);
-            var password = UserPassword.Create(request.Password);
-
-            var user = User.Create(fullName, email, password);
+            var user = User.Create(
+                new Name(request.FullName),
+                new Email(request.Email),
+                new UserPassword(request.Password));
 
             await _userRepository.AddAsync(user, cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new UserCreated(
+                user.Id,
+                user.FullName,
+                user.Email
+            ), cancellationToken);
 
             return Result.Ok(user.Id.Value);
         }

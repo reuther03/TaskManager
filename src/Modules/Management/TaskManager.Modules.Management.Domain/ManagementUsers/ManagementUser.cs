@@ -18,4 +18,7 @@ public class ManagementUser : AggregateRoot<UserId>
         FullName = fullName;
         Email = email;
     }
+
+    public static ManagementUser Create(UserId userId, Name fullName, Email email)
+        => new ManagementUser(userId, fullName, email);
 }
