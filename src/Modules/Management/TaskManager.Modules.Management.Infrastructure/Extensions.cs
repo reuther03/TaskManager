@@ -13,6 +13,7 @@ public static class Extensions
     {
         services
             .AddPostgres<ManagementsDbContext>()
+            .AddScoped<ITeamRepository, TeamRepository>()
             .AddScoped<IManagementUserRepository, ManagementUserRepository>();
 
         return services;

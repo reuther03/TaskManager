@@ -21,20 +21,6 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
             .HasConversion(x => x.Value, x => new Name(x))
             .IsRequired();
 
-        builder.OwnsMany(x => x.UserIds, ownedBuilder =>
-        {
-            ownedBuilder.WithOwner().HasForeignKey("TeamId");
-            ownedBuilder.ToTable("TeamManagementUserIds");
-            ownedBuilder.HasKey("Id");
-
-            ownedBuilder.Property(x => x.Value)
-                .ValueGeneratedNever()
-                .HasColumnName("UserId");
-
-            builder.Metadata.FindNavigation(nameof(Team.UserIds))!
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
-        });
-
         builder.OwnsMany(x => x.TaskItemIds, ownedBuilder =>
         {
             ownedBuilder.WithOwner().HasForeignKey("TeamId");
@@ -48,5 +34,10 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
             builder.Metadata.FindNavigation(nameof(Team.TaskItemIds))!
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
         });
+
+        builder.HasMany(x => x.TeamMembers)
+            .WithOne()
+            .HasForeignKey("TeamId")
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

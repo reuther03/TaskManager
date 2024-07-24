@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class AddedTeamMember : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,20 +61,20 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TeamManagementUserIds",
+                name: "TeamMembers",
                 schema: "management",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     TeamId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                    TeamRole = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamManagementUserIds", x => x.Id);
+                    table.PrimaryKey("PK_TeamMembers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TeamManagementUserIds_Teams_TeamId",
+                        name: "FK_TeamMembers_Teams_TeamId",
                         column: x => x.TeamId,
                         principalSchema: "management",
                         principalTable: "Teams",
@@ -105,9 +105,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeamManagementUserIds_TeamId",
+                name: "IX_TeamMembers_TeamId",
                 schema: "management",
-                table: "TeamManagementUserIds",
+                table: "TeamMembers",
                 column: "TeamId");
 
             migrationBuilder.CreateIndex(
@@ -129,7 +129,7 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 schema: "management");
 
             migrationBuilder.DropTable(
-                name: "TeamManagementUserIds",
+                name: "TeamMembers",
                 schema: "management");
 
             migrationBuilder.DropTable(

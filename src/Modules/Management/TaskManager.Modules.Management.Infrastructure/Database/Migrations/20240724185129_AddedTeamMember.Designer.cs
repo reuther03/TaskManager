@@ -12,8 +12,8 @@ using TaskManager.Modules.Management.Infrastructure.Database;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ManagementsDbContext))]
-    [Migration("20240723021122_Initial")]
-    partial class Initial
+    [Migration("20240724185129_AddedTeamMember")]
+    partial class AddedTeamMember
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +78,27 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.ToTable("TaskItems", "management");
                 });
 
+            modelBuilder.Entity("TaskManager.Modules.Management.Domain.TeamMembers.TeamMember", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("TeamRole")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("TeamMembers", "management");
+                });
+
             modelBuilder.Entity("TaskManager.Modules.Management.Domain.Teams.Team", b =>
                 {
                     b.Property<Guid>("Id")
@@ -93,33 +114,17 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.ToTable("Teams", "management");
                 });
 
+            modelBuilder.Entity("TaskManager.Modules.Management.Domain.TeamMembers.TeamMember", b =>
+                {
+                    b.HasOne("TaskManager.Modules.Management.Domain.Teams.Team", null)
+                        .WithMany("TeamMembers")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TaskManager.Modules.Management.Domain.Teams.Team", b =>
                 {
-                    b.OwnsMany("TaskManager.Abstractions.Kernel.ValueObjects.User.UserId", "UserIds", b1 =>
-                        {
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer");
-
-                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
-
-                            b1.Property<Guid>("TeamId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<Guid>("Value")
-                                .HasColumnType("uuid")
-                                .HasColumnName("UserId");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("TeamId");
-
-                            b1.ToTable("TeamManagementUserIds", "management");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TeamId");
-                        });
-
                     b.OwnsMany("TaskManager.Modules.Management.Domain.TaskItems.TaskItemId", "TaskItemIds", b1 =>
                         {
                             b1.Property<int>("Id")
@@ -146,8 +151,11 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                         });
 
                     b.Navigation("TaskItemIds");
+                });
 
-                    b.Navigation("UserIds");
+            modelBuilder.Entity("TaskManager.Modules.Management.Domain.Teams.Team", b =>
+                {
+                    b.Navigation("TeamMembers");
                 });
 #pragma warning restore 612, 618
         }
