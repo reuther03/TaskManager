@@ -3,9 +3,9 @@ using TaskManager.Modules.Management.Application.Database;
 
 namespace TaskManager.Modules.Management.Infrastructure.Database;
 
-internal class UnitOfWork : BaseUnitOfWork<ManagementsDbContext>, IUnitOfWork
+internal class ManagementUnitOfWork : BaseUnitOfWork<ManagementsDbContext>, IUnitOfWork
 {
-    public UnitOfWork(ManagementsDbContext dbContext) : base(dbContext)
+    public ManagementUnitOfWork(ManagementsDbContext dbContext) : base(dbContext)
     {
     }
 }

@@ -3,9 +3,9 @@ using TaskManager.Modules.Users.Application.Abstractions;
 
 namespace TaskManager.Modules.Users.Infrastructure.Database;
 
-internal class UnitOfWork : BaseUnitOfWork<UsersDbContext>, IUnitOfWork
+internal class UserUnitOfWork : BaseUnitOfWork<UsersDbContext>, IUnitOfWork
 {
-    public UnitOfWork(UsersDbContext dbContext) : base(dbContext)
+    public UserUnitOfWork(UsersDbContext dbContext) : base(dbContext)
     {
     }
 }

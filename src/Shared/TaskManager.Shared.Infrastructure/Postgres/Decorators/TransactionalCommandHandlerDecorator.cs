@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TaskManager.Abstractions.Kernel;
 using TaskManager.Abstractions.Kernel.Database;
 using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
