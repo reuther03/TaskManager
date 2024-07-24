@@ -10,8 +10,4 @@
       <ProjectReference Include="..\TaskManager.Modules.Management.Domain\TaskManager.Modules.Management.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\Commands\" />
-    </ItemGroup>
-
 </Project>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Infrastructure.Postgres;
+using TaskManager.Modules.Users.Application.Abstractions;
 using TaskManager.Modules.Users.Application.Abstractions.Database.Repositories;
 using TaskManager.Modules.Users.Infrastructure.Database;
 using TaskManager.Modules.Users.Infrastructure.Database.Repositories;
@@ -12,7 +13,8 @@ public static class Extensions
     {
         services
             .AddPostgres<UsersDbContext>()
-            .AddScoped<IUserRepository, UserRepository>();
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddUnitOfWork<IUsersUnitOfWork, UsersUnitOfWork>();
 
         return services;
     }

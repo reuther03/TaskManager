@@ -12,6 +12,7 @@ public record LoginCommand(string Email, string Password) : ICommand<AccessToken
         private readonly IUserRepository _userRepository;
         private readonly IJwtProvider _jwtProvider;
 
+
         public Handler(IUserRepository userRepository, IJwtProvider jwtProvider)
         {
             _userRepository = userRepository;

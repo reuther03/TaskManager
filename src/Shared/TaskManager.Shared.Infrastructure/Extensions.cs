@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Abstractions.Modules;
 using TaskManager.Infrastructure.Api;
 using TaskManager.Infrastructure.Auth;
+using TaskManager.Infrastructure.Postgres;
 using TaskManager.Infrastructure.Services;
 using TaskManager.Infrastructure.Swagger;
 
@@ -39,8 +40,10 @@ internal static class Extensions
 
         services.AddSwagger();
         services.AddAuth(configuration);
+        services.AddDecorators();
         services.AddHostedService<AppInitializer>();
-        services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(assemblies.ToArray()); });
+        services.AddPostgres();
+        services.AddMediatrWithFilters(assemblies);
 
         services.AddControllers()
             .ConfigureApplicationPartManager(manager =>
@@ -85,5 +88,20 @@ internal static class Extensions
         var options = new T();
         configuration.GetSection(sectionName).Bind(options);
         return options;
+    }
+
+    public static string GetModuleName(this object value)
+        => value?.GetType().GetModuleName() ?? string.Empty;
+
+    public static string GetModuleName(this Type type)
+    {
+        if (type?.Namespace is null)
+        {
+            return string.Empty;
+        }
+
+        return type.Namespace.StartsWith("TaskManager.Modules.")
+            ? type.Namespace.Split('.')[2].ToLowerInvariant()
+            : string.Empty;
     }
 }

@@ -4,6 +4,7 @@ using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
+using TaskManager.Modules.Users.Application.Abstractions;
 using TaskManager.Modules.Users.Application.Abstractions.Database.Repositories;
 using TaskManager.Modules.Users.Domain.Users.Entities;
 using UserPassword = TaskManager.Modules.Users.Domain.Users.ValueObjects.Password;
@@ -16,11 +17,13 @@ public record SignUpCommand(string FullName, string Email, string Password) : IC
     {
         private readonly IUserRepository _userRepository;
         private readonly IPublisher _publisher;
+        private readonly IUsersUnitOfWork _unitOfWork;
 
-        public Handler(IUserRepository userRepository, IPublisher publisher)
+        public Handler(IUserRepository userRepository, IPublisher publisher, IUsersUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
             _publisher = publisher;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result<Guid>> Handle(SignUpCommand request, CancellationToken cancellationToken)
@@ -36,7 +39,7 @@ public record SignUpCommand(string FullName, string Email, string Password) : IC
                 new UserPassword(request.Password));
 
             await _userRepository.AddAsync(user, cancellationToken);
-            await _userRepository.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             await _publisher.Publish(new UserCreated(
                 user.Id,
