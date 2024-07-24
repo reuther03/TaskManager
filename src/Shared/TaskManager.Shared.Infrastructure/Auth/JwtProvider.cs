@@ -48,3 +48,9 @@ public class JwtProvider : IJwtProvider
         return tokenValue;
     }
 }
+
+public static class ClaimConsts
+{
+    public const string UserId = "user_id";
+    public const string Email = "user_email";
+}
