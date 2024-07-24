@@ -34,7 +34,18 @@ public static class Extensions
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer();
+            .AddJwtBearer(o =>
+            {
+                o.Audience = jwtOptions.Audience;
+                o.IncludeErrorDetails = true;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = jwtOptions.Issuer,
+                    ValidateLifetime = false,
+                    ClockSkew = TimeSpan.Zero,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
+                };
+            });
 
         services.AddSingleton(jwtOptions);
         services.AddSingleton(tokenValidationParameters);

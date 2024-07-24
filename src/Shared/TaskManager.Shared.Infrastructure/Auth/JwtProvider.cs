@@ -27,12 +27,16 @@ public class JwtProvider : IJwtProvider
 
         var now = DateTime.UtcNow;
 
+        var polandTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
+        var localNow = TimeZoneInfo.ConvertTimeFromUtc(now, polandTimeZone);
+
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),
             SecurityAlgorithms.HmacSha256Signature
         );
 
-        var expires = now.Add(_jwtOptions.Expiry);
+        var expires = localNow.Add(_jwtOptions.Expiry);
 
         var token = new JwtSecurityToken(
             _jwtOptions.Issuer,

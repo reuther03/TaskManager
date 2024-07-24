@@ -12,9 +12,7 @@ public static class Extensions
     {
         var options = services.GetOptions<PostgresOptions>("postgres");
         services.AddSingleton(options);
-        //todo: scpoted
         services.AddSingleton(new UnitOfWorkTypeRegistry());
-        // services.AddScoped<UnitOfWorkTypeRegistry>();
 
         return services;
     }
