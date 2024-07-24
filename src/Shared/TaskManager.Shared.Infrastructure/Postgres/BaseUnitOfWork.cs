@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Abstractions.Kernel;
+using TaskManager.Abstractions.Kernel.Database;
 using TaskManager.Abstractions.Kernel.Primitives.Result;
 
 namespace TaskManager.Infrastructure.Postgres;

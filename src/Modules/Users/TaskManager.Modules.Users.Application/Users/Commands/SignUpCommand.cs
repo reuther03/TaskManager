@@ -17,9 +17,9 @@ public record SignUpCommand(string FullName, string Email, string Password) : IC
     {
         private readonly IUserRepository _userRepository;
         private readonly IPublisher _publisher;
-        private readonly IUsersUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public Handler(IUserRepository userRepository, IPublisher publisher, IUsersUnitOfWork unitOfWork)
+        public Handler(IUserRepository userRepository, IPublisher publisher, IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
             _publisher = publisher;
@@ -36,7 +36,7 @@ public record SignUpCommand(string FullName, string Email, string Password) : IC
             var user = User.Create(
                 new Name(request.FullName),
                 new Email(request.Email),
-                new UserPassword(request.Password));
+                UserPassword.Create(request.Password));
 
             await _userRepository.AddAsync(user, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);

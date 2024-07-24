@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Abstractions.Kernel;
+using TaskManager.Abstractions.Kernel.Database;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Infrastructure.Postgres.Decorators;
 

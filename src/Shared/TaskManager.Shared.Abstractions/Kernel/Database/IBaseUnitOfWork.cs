@@ -1,6 +1,6 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives.Result;
 
-namespace TaskManager.Abstractions.Kernel;
+namespace TaskManager.Abstractions.Kernel.Database;
 
 public interface IBaseUnitOfWork
 {
