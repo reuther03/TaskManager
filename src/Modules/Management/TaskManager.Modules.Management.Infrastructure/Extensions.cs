@@ -15,6 +15,7 @@ public static class Extensions
             .AddPostgres<ManagementsDbContext>()
             .AddScoped<ITeamRepository, TeamRepository>()
             .AddScoped<IManagementUserRepository, ManagementUserRepository>()
+            .AddScoped<ITeamMemberRepository, TeamMemberRepository>()
             .AddUnitOfWork<IUnitOfWork, ManagementUnitOfWork>();
 
         return services;

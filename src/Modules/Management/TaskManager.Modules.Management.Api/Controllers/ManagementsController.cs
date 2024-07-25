@@ -21,4 +21,12 @@ internal class ManagementsController : BaseController
         var result = await _sender.Send(command);
         return Ok(result);
     }
+
+    [HttpPost("add-team-member")]
+    [Authorize]
+    public async Task<IActionResult> AddTeamMember([FromBody] AddTeamMemberCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
+    }
 }

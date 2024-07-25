@@ -13,8 +13,10 @@ internal class TeamRepository : ITeamRepository
     {
         _context = context;
         _teams = _context.Teams;
-        //jak zrobisz tak to cos sie moze dojebac _teams = teams; (cos z lifetimem z mediatora)
     }
+
+    public Task<Team> GetByIdAsync(TeamId id, CancellationToken cancellationToken = default)
+        => _teams.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
     public Task<bool> ExistsAsync(TeamId id, CancellationToken cancellationToken = default)
         => _teams.AnyAsync(x => x.Id == id, cancellationToken: cancellationToken);
