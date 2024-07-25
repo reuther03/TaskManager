@@ -25,6 +25,7 @@ public class TeamMemberConfiguration : IEntityTypeConfiguration<TeamMember>
             .ValueGeneratedNever();
 
         builder.Property(x => x.TeamRole)
+            .HasConversion<string>()
             .IsRequired();
     }
 }

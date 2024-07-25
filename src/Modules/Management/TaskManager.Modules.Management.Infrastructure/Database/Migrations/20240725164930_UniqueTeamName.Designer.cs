@@ -12,8 +12,8 @@ using TaskManager.Modules.Management.Infrastructure.Database;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ManagementsDbContext))]
-    [Migration("20240724185129_AddedTeamMember")]
-    partial class AddedTeamMember
+    [Migration("20240725164930_UniqueTeamName")]
+    partial class UniqueTeamName
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,8 +86,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("TeamRole")
-                        .HasColumnType("integer");
+                    b.Property<string>("TeamRole")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -110,6 +111,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Teams", "management");
                 });

@@ -21,6 +21,8 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
             .HasConversion(x => x.Value, x => new Name(x))
             .IsRequired();
 
+        builder.HasIndex(x => x.Name).IsUnique();
+
         builder.OwnsMany(x => x.TaskItemIds, ownedBuilder =>
         {
             ownedBuilder.WithOwner().HasForeignKey("TeamId");

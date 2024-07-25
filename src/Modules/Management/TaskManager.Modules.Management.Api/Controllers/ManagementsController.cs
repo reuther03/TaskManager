@@ -14,7 +14,7 @@ internal class ManagementsController : BaseController
         _sender = sender;
     }
 
-    [HttpPost]
+    [HttpPost("create-team")]
     [Authorize]
     public async Task<IActionResult> CreateTeam([FromBody] CreateTeamCommand command)
     {

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedTeamMember : Migration
+    public partial class UniqueTeamName : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,7 +68,7 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     TeamId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TeamRole = table.Column<int>(type: "integer", nullable: false)
+                    TeamRole = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,6 +109,13 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 schema: "management",
                 table: "TeamMembers",
                 column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_Name",
+                schema: "management",
+                table: "Teams",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TeamTaskIds_TeamId",

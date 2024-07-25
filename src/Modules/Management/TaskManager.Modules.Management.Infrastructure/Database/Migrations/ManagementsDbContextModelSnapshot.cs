@@ -83,8 +83,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("TeamRole")
-                        .HasColumnType("integer");
+                    b.Property<string>("TeamRole")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -107,6 +108,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Teams", "management");
                 });
