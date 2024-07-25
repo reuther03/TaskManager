@@ -9,12 +9,14 @@ namespace TaskManager.Modules.Management.Domain.Teams;
 public class Team : AggregateRoot<TeamId>
 {
     private readonly List<TaskItemId> _taskItemIds = [];
+
     // private readonly List<UserId> _userIds = [];
     private readonly List<TeamMember> _teamMembers = [];
 
     public Name Name { get; private set; }
 
     public IReadOnlyList<TaskItemId> TaskItemIds => _taskItemIds.AsReadOnly();
+
     // public IReadOnlyList<UserId> UserIds => _userIds.AsReadOnly();
     public IReadOnlyCollection<TeamMember> TeamMembers => _teamMembers.AsReadOnly();
 
@@ -29,4 +31,14 @@ public class Team : AggregateRoot<TeamId>
 
     public static Team Create(string teamName)
         => new Team(TeamId.New(), teamName);
+
+    public void AddMember(TeamMember teamMember)
+    {
+        if (_teamMembers.Exists(x => x.UserId == teamMember.UserId))
+        {
+            throw new InvalidOperationException("User is already a member of the team");
+        }
+
+        _teamMembers.Add(teamMember);
+    }
 }

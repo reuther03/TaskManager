@@ -2,7 +2,6 @@
 using TaskManager.Abstractions.Events;
 using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Abstractions.Kernel.ValueObjects.User;
-using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Repositories;
 using TaskManager.Modules.Management.Domain.ManagementUsers;
 

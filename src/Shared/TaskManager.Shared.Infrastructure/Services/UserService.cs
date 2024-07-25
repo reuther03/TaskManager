@@ -24,7 +24,7 @@ public class UserService : IUserService
         if (claims is null)
             return null;
 
-        var userId = claims.FindFirst(ClaimConsts.UserId)?.Value;
+        var userId = claims.FindFirst(ClaimTypes.Name)?.Value;
         return userId is null ? null : UserId.From(userId);
     }
 

@@ -22,6 +22,9 @@ internal class ManagementUserRepository : IManagementUserRepository
     public async Task AddAsync(ManagementUser managementUser, CancellationToken cancellationToken = default)
         => await _users.AddAsync(managementUser, cancellationToken);
 
+    public async Task<ManagementUser> GetByIdAsync(UserId id, CancellationToken cancellationToken = default)
+        => await _users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         => await _context.SaveChangesAsync(cancellationToken);
 }

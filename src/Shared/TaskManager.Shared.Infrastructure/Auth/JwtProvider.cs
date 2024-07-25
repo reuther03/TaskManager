@@ -55,6 +55,6 @@ public class JwtProvider : IJwtProvider
 
 public static class ClaimConsts
 {
-    public const string UserId = "user_id";
-    public const string Email = "user_email";
+    public const string UserId = "sub";
+    public const string Email = "email";
 }
