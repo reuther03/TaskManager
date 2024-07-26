@@ -22,4 +22,10 @@ internal class TeamMemberRepository : ITeamMemberRepository
 
     public async Task<List<TeamMember>> GetTeamMembersAsync(TeamId id, CancellationToken cancellationToken = default)
         => await _teamMembers.Where(x => x.TeamId == id).ToListAsync(cancellationToken);
+
+    public async Task UpdateAsync(TeamMember member, CancellationToken cancellationToken = default)
+    {
+        _teamMembers.Update(member);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }

@@ -1,4 +1,5 @@
-﻿using TaskManager.Abstractions.Kernel.Primitives;
+﻿using TaskManager.Abstractions.Exception;
+using TaskManager.Abstractions.Kernel.Primitives;
 using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Modules.Management.Domain.Teams;
 
@@ -23,4 +24,12 @@ public class TeamMember : Entity<Guid>
 
     public static TeamMember Create(UserId userId, TeamId teamId, TeamRole teamRole)
         => new TeamMember(Guid.NewGuid(), userId, teamId, teamRole);
+
+    public void ChangeRole(TeamRole role)
+    {
+        if (TeamRole == role)
+            throw new DomainException("Cannot change role to the same role");
+
+        TeamRole = role;
+    }
 }

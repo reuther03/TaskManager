@@ -37,4 +37,12 @@ internal class ManagementsController : BaseController
         var result = await _sender.Send(command);
         return Ok(result);
     }
+
+    [HttpPatch("change-member-role")]
+    [Authorize]
+    public async Task<IActionResult> ChangeMemberRole([FromBody] ChangeMemberRoleCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
+    }
 }
