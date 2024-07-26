@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskManager.Abstractions.Kernel.ValueObjects;
+using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Modules.Management.Domain.TaskItems;
 
 namespace TaskManager.Modules.Management.Infrastructure.Database.Configurations;
@@ -36,6 +37,10 @@ public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
             .IsRequired();
 
         builder.Property(x => x.Progress)
+            .IsRequired();
+
+        builder.Property(x => x.AssignedUserId)
+            .HasConversion(x => x.Value, x => new UserId(x))
             .IsRequired();
     }
 }

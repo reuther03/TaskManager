@@ -12,8 +12,8 @@ using TaskManager.Modules.Management.Infrastructure.Database;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ManagementsDbContext))]
-    [Migration("20240725164930_UniqueTeamName")]
-    partial class UniqueTeamName
+    [Migration("20240726001257_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
             modelBuilder.Entity("TaskManager.Modules.Management.Domain.TaskItems.TaskItem", b =>
                 {
                     b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AssignedUserId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")

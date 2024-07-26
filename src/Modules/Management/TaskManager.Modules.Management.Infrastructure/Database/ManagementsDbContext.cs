@@ -21,6 +21,7 @@ internal class ManagementsDbContext : DbContext, IManagementsDbContext
 
     public ManagementsDbContext(DbContextOptions<ManagementsDbContext> options) : base(options)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

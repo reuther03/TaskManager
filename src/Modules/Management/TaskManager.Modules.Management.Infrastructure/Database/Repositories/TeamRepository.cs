@@ -18,12 +18,18 @@ internal class TeamRepository : ITeamRepository
     public Task<Team> GetByIdAsync(TeamId id, CancellationToken cancellationToken = default)
         => _teams.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
+    public Task GetTeamMembersAsync(TeamId id, CancellationToken cancellationToken = default)
+        => _teams.Where(x => x.Id == id).Select(x => x.TeamMembers).ToListAsync(cancellationToken);
+
     public Task<bool> ExistsAsync(TeamId id, CancellationToken cancellationToken = default)
         => _teams.AnyAsync(x => x.Id == id, cancellationToken: cancellationToken);
 
     public async Task AddAsync(Team team, CancellationToken cancellationToken = default)
         => await _teams.AddAsync(team, cancellationToken);
 
-    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
-        => _context.SaveChangesAsync(cancellationToken);
+    public async Task UpdateAsync(Team team, CancellationToken cancellationToken = default)
+    {
+        _teams.Update(team);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }

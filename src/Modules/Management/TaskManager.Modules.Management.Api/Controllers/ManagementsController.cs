@@ -29,4 +29,12 @@ internal class ManagementsController : BaseController
         var result = await _sender.Send(command);
         return Ok(result);
     }
+
+    [HttpPost("add-task")]
+    [Authorize]
+    public async Task<IActionResult> AddTask([FromBody] AddTaskCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
+    }
 }

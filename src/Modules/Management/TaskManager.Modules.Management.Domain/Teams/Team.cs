@@ -41,4 +41,14 @@ public class Team : AggregateRoot<TeamId>
 
         _teamMembers.Add(teamMember);
     }
+
+    public void AddTask(TaskItem taskItem)
+    {
+        if (_taskItemIds.Contains(taskItem.Id))
+        {
+            throw new InvalidOperationException("Task is already added to the team");
+        }
+
+        _taskItemIds.Add(taskItem.Id);
+    }
 }

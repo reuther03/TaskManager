@@ -16,6 +16,7 @@ public static class Extensions
             .AddScoped<ITeamRepository, TeamRepository>()
             .AddScoped<IManagementUserRepository, ManagementUserRepository>()
             .AddScoped<ITeamMemberRepository, TeamMemberRepository>()
+            .AddScoped<ITaskRepository, TaskRepository>()
             .AddUnitOfWork<IUnitOfWork, ManagementUnitOfWork>();
 
         return services;
