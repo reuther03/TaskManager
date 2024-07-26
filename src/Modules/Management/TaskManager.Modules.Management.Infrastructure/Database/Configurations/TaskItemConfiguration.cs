@@ -37,6 +37,7 @@ public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
             .IsRequired();
 
         builder.Property(x => x.Progress)
+            .HasConversion<string>()
             .IsRequired();
 
         builder.Property(x => x.AssignedUserId)
