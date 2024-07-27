@@ -10,14 +10,10 @@ public class Team : AggregateRoot<TeamId>
 {
     private readonly List<TaskItemId> _taskItemIds = [];
 
-    // private readonly List<UserId> _userIds = [];
     private readonly List<TeamMember> _teamMembers = [];
 
     public Name Name { get; private set; }
-
     public IReadOnlyList<TaskItemId> TaskItemIds => _taskItemIds.AsReadOnly();
-
-    // public IReadOnlyList<UserId> UserIds => _userIds.AsReadOnly();
     public IReadOnlyCollection<TeamMember> TeamMembers => _teamMembers.AsReadOnly();
 
     protected Team()

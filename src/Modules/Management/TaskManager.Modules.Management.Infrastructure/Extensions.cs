@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Infrastructure.Postgres;
 using TaskManager.Modules.Management.Application.Database;
+using TaskManager.Modules.Management.Application.Database.Abstractions;
 using TaskManager.Modules.Management.Application.Database.Repositories;
 using TaskManager.Modules.Management.Infrastructure.Database;
 using TaskManager.Modules.Management.Infrastructure.Database.Repositories;
@@ -13,6 +14,7 @@ public static class Extensions
     {
         services
             .AddPostgres<ManagementsDbContext>()
+            .AddScoped<IManagementsDbContext, ManagementsDbContext>()
             .AddScoped<ITeamRepository, TeamRepository>()
             .AddScoped<IManagementUserRepository, ManagementUserRepository>()
             .AddScoped<ITeamMemberRepository, TeamMemberRepository>()

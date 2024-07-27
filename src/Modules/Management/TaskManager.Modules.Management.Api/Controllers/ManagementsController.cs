@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Modules.Management.Application.Features.Commands.Teams;
+using TaskManager.Modules.Management.Application.Features.Queries;
 
 namespace TaskManager.Modules.Management.Api.Controllers;
 
@@ -13,6 +14,15 @@ internal class ManagementsController : BaseController
     {
         _sender = sender;
     }
+
+    [HttpGet("team/{teamId:guid}")]
+    [Authorize]
+    public async Task<IActionResult> GetTeams([FromRoute] Guid teamId)
+    {
+        var result = await _sender.Send(new GetTeamQuery(teamId));
+        return Ok(result);
+    }
+
 
     [HttpPost("create-team")]
     [Authorize]
