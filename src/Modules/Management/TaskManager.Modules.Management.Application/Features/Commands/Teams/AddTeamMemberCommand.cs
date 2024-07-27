@@ -41,6 +41,10 @@ public record AddTeamMemberCommand(Guid UserId, Guid UsersTeamId) : ICommand<Gui
             if (currentUser is null)
                 return Result<Guid>.NotFound("User not found");
 
+            var team = await _teamRepository.GetByIdAsync(TeamId.From(request.UsersTeamId), cancellationToken);
+            if (team is null)
+                return Result<Guid>.NotFound("Team not found");
+
             if (currentUser.TeamId != TeamId.From(request.UsersTeamId) && currentUser.TeamRole != TeamRole.Admin)
                 return Result<Guid>.BadRequest("You are not allowed to add members to this team");
 
@@ -48,9 +52,6 @@ public record AddTeamMemberCommand(Guid UserId, Guid UsersTeamId) : ICommand<Gui
             if (user is null)
                 return Result<Guid>.NotFound("User not found");
 
-            var team = await _teamRepository.GetByIdAsync(TeamId.From(request.UsersTeamId), cancellationToken);
-            if (team is null)
-                return Result<Guid>.NotFound("Team not found");
 
             var teamMember = TeamMember.Create(user.Id, team.Id, TeamRole.Member);
 

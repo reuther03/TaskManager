@@ -40,17 +40,17 @@ internal class ManagementsController : BaseController
         return Ok(result);
     }
 
-    [HttpPost("add-team-member")]
+    [HttpPost("{teamId:Guid}/add-team-member")]
     [Authorize]
-    public async Task<IActionResult> AddTeamMember([FromBody] AddTeamMemberCommand command)
+    public async Task<IActionResult> AddTeamMember([FromRoute] Guid teamId, [FromBody] AddTeamMemberCommand command)
     {
-        var result = await _sender.Send(command);
+        var result = await _sender.Send(command with { UsersTeamId = teamId });
         return Ok(result);
     }
 
     [HttpPost("{teamId:guid}/add-task")]
     [Authorize]
-    public async Task<IActionResult> AddTask([FromBody] AddTaskCommand command, [FromRoute] Guid teamId)
+    public async Task<IActionResult> AddTask([FromRoute] Guid teamId, [FromBody] AddTaskCommand command)
     {
         var result = await _sender.Send(command with { CurrentTeamId = teamId });
         return Ok(result);

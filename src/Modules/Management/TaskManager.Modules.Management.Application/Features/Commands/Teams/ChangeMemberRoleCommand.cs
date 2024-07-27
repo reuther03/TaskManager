@@ -39,7 +39,11 @@ public record ChangeMemberRoleCommand(Guid CurrentTeamId, Guid MemberId, int Rol
             if (member is null)
                 return Result<Guid>.NotFound("Member not found");
 
-            if (currentUser.TeamId != member.TeamId)
+            var team = await _teamRepository.GetByIdAsync(TeamId.From(request.CurrentTeamId), cancellationToken);
+            if (team is null)
+                return Result<Guid>.NotFound("Team not found");
+
+            if (!await _memberRepository.InSameTeamAsync(currentUser.UserId, member.UserId, team.Id, cancellationToken))
                 return Result<Guid>.BadRequest("Member is not a member of this team");
 
             if (request.Role != Leader && request.Role != Member) // 1 - Leader, 2 - Member
@@ -48,9 +52,6 @@ public record ChangeMemberRoleCommand(Guid CurrentTeamId, Guid MemberId, int Rol
             if (member.TeamRole == TeamRole.Admin)
                 return Result<Guid>.BadRequest("Cannot change role of admin");
 
-            var team = await _teamRepository.GetByIdAsync(TeamId.From(request.CurrentTeamId), cancellationToken);
-            if (team is null)
-                return Result<Guid>.NotFound("Team not found");
 
             var memberRole = request.Role == Leader ? TeamRole.Leader : TeamRole.Member;
             member.ChangeRole(memberRole);

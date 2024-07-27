@@ -23,6 +23,12 @@ internal class TeamMemberRepository : ITeamMemberRepository
     public async Task<List<TeamMember>> GetTeamMembersAsync(TeamId id, CancellationToken cancellationToken = default)
         => await _teamMembers.Where(x => x.TeamId == id).ToListAsync(cancellationToken);
 
+    public Task<bool> InSameTeamAsync(UserId userId1, UserId userId2, TeamId teamId, CancellationToken cancellationToken = default)
+    => _teamMembers.Select(x => x.UserId == userId1 && x.UserId == userId2 && x.TeamId == teamId).AnyAsync(cancellationToken);
+
+    public Task<bool> MemberInTeamAsync(UserId userId, TeamId teamId, CancellationToken cancellationToken = default)
+        => _teamMembers.Select(x => x.UserId == userId && x.TeamId == teamId).AnyAsync(cancellationToken);
+
     public async Task UpdateAsync(TeamMember member, CancellationToken cancellationToken = default)
     {
         _teamMembers.Update(member);
