@@ -23,6 +23,14 @@ internal class ManagementsController : BaseController
         return Ok(result);
     }
 
+    [HttpGet("teams")]
+    [Authorize]
+    public async Task<IActionResult> GetTeams([FromQuery] GetMemberTeamsQuery query)
+    {
+        var result = await _sender.Send(query);
+        return Ok(result);
+    }
+
 
     [HttpPost("create-team")]
     [Authorize]
@@ -40,11 +48,11 @@ internal class ManagementsController : BaseController
         return Ok(result);
     }
 
-    [HttpPost("add-task")]
+    [HttpPost("{teamId:guid}/add-task")]
     [Authorize]
-    public async Task<IActionResult> AddTask([FromBody] AddTaskCommand command)
+    public async Task<IActionResult> AddTask([FromBody] AddTaskCommand command, [FromRoute] Guid teamId)
     {
-        var result = await _sender.Send(command);
+        var result = await _sender.Send(command with { CurrentTeamId = teamId });
         return Ok(result);
     }
 

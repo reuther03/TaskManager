@@ -1,6 +1,5 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives;
 using TaskManager.Abstractions.Kernel.ValueObjects;
-using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Modules.Management.Domain.TaskItems;
 using TaskManager.Modules.Management.Domain.TeamMembers;
 

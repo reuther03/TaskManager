@@ -1,7 +1,6 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Abstractions.Services;
-using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Repositories;
 using TaskManager.Modules.Management.Domain.TeamMembers;
 using TaskManager.Modules.Management.Domain.Teams;

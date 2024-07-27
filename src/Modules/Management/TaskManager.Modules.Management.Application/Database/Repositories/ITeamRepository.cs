@@ -1,5 +1,4 @@
-﻿using TaskManager.Modules.Management.Domain.TeamMembers;
-using TaskManager.Modules.Management.Domain.Teams;
+﻿using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Application.Database.Repositories;
 

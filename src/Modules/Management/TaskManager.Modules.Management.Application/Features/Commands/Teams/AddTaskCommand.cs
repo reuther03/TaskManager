@@ -1,9 +1,8 @@
-﻿using TaskManager.Abstractions.Kernel.Primitives.Result;
+﻿using System.Text.Json.Serialization;
+using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.Kernel.ValueObjects;
-using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Abstractions.Services;
-using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Repositories;
 using TaskManager.Modules.Management.Domain.TaskItems;
 using TaskManager.Modules.Management.Domain.TeamMembers;
@@ -12,7 +11,7 @@ using TaskManager.Modules.Management.Domain.Teams;
 namespace TaskManager.Modules.Management.Application.Features.Commands.Teams;
 
 public record AddTaskCommand(
-    Guid CurrentTeamId,
+    [property: JsonIgnore] Guid CurrentTeamId,
     string Name,
     string Description,
     DateTime Deadline,

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Abstractions.Modules;
-using TaskManager.Abstractions.Services;
 using TaskManager.Infrastructure.Api;
 using TaskManager.Infrastructure.Auth;
 using TaskManager.Infrastructure.Postgres;

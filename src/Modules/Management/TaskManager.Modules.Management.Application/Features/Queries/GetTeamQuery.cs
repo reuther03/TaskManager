@@ -8,9 +8,9 @@ using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Application.Features.Queries;
 
-public record GetTeamQuery(Guid CurrentTeamId) : IQuery<TeamDto>
+public record GetTeamQuery(Guid CurrentTeamId) : IQuery<TeamDetailsDto>
 {
-    internal sealed class Handler : IQueryHandler<GetTeamQuery, TeamDto>
+    internal sealed class Handler : IQueryHandler<GetTeamQuery, TeamDetailsDto>
     {
         private readonly IManagementsDbContext _dbContext;
         private readonly IUserService _userService;
@@ -21,16 +21,16 @@ public record GetTeamQuery(Guid CurrentTeamId) : IQuery<TeamDto>
             _userService = userService;
         }
 
-        public async Task<Result<TeamDto>> Handle(GetTeamQuery request, CancellationToken cancellationToken)
+        public async Task<Result<TeamDetailsDto>> Handle(GetTeamQuery request, CancellationToken cancellationToken)
         {
             var user = await _dbContext.TeamMembers
                 .FirstOrDefaultAsync(x => x.UserId == _userService.UserId, cancellationToken);
 
             if (user is null)
-                return Result.Unauthorized<TeamDto>("User not found");
+                return Result.Unauthorized<TeamDetailsDto>("User not found");
 
             if (user.TeamId != TeamId.From(request.CurrentTeamId))
-                return Result.BadRequest<TeamDto>("User is not a member of the team");
+                return Result.BadRequest<TeamDetailsDto>("User is not a member of the team");
 
             var team = await _dbContext.Teams
                 .Include(x => x.TeamMembers)
@@ -38,8 +38,8 @@ public record GetTeamQuery(Guid CurrentTeamId) : IQuery<TeamDto>
                 .FirstOrDefaultAsync(x => x.Id == TeamId.From(request.CurrentTeamId), cancellationToken);
 
             return team is null
-                ? Result.NotFound<TeamDto>("Team not found")
-                : Result.Ok(TeamDto.AsDto(team));
+                ? Result.NotFound<TeamDetailsDto>("Team not found")
+                : Result.Ok(TeamDetailsDto.AsDto(team));
         }
     }
 }
