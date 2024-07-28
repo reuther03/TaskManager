@@ -9,9 +9,9 @@ public record TaskItemId : EntityId
     {
     }
 
-    public static TeamId New() => new(Guid.NewGuid());
-    public static TeamId From(Guid value) => new(value);
-    public static TeamId From(string value) => new(Guid.Parse(value));
+    public static TaskItemId New() => new(Guid.NewGuid());
+    public static TaskItemId From(Guid value) => new(value);
+    public static TaskItemId From(string value) => new(Guid.Parse(value));
 
     public static implicit operator Guid(TaskItemId taskItemId) => taskItemId.Value;
     public static implicit operator TaskItemId(Guid taskItemId) => new(taskItemId);

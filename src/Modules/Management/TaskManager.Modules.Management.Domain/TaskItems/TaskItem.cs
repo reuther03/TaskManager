@@ -50,4 +50,12 @@ public class TaskItem : AggregateRoot<TaskItemId>
 
         return groupTask;
     }
+
+    public void ChangeStatus(TaskProgress progress)
+    {
+        if (Progress == TaskProgress.Completed)
+            throw new DomainException("Task is already done.");
+
+        Progress = progress;
+    }
 }
