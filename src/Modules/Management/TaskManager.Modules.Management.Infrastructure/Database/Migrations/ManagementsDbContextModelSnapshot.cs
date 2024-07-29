@@ -69,6 +69,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("ReminderSent")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("TaskName")
                         .IsRequired()
                         .HasMaxLength(100)

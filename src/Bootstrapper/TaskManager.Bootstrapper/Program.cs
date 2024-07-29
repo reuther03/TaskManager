@@ -3,6 +3,7 @@ using TaskManager.Infrastructure;
 using TaskManager.Infrastructure.Modules;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddUserSecrets<Program>();
 var services = builder.Services;
 var configuration = builder.Configuration;
 

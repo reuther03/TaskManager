@@ -1,6 +1,4 @@
-﻿using MediatR;
-using TaskManager.Abstractions.Auth;
-using TaskManager.Abstractions.Events;
+﻿using TaskManager.Abstractions.Auth;
 using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Modules.Users.Application.Abstractions.Database.Repositories;
@@ -13,13 +11,11 @@ public record LoginCommand(string Email, string Password) : ICommand<AccessToken
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtProvider _jwtProvider;
-        private readonly IPublisher _publisher;
 
-        public Handler(IUserRepository userRepository, IJwtProvider jwtProvider, IPublisher publisher)
+        public Handler(IUserRepository userRepository, IJwtProvider jwtProvider)
         {
             _userRepository = userRepository;
             _jwtProvider = jwtProvider;
-            _publisher = publisher;
         }
 
         public async Task<Result<AccessToken>> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -32,7 +28,6 @@ public record LoginCommand(string Email, string Password) : ICommand<AccessToken
                 return Result.Unauthorized<AccessToken>("Authentication failed");
 
             var token = AccessToken.Create(_jwtProvider.GenerateToken(user.Id.ToString(), user.Email), user.Id, user.Email);
-            await _publisher.Publish(new UserLoggedInEvent(user.Id, user.Email), cancellationToken);
 
             return Result.Ok(token);
         }

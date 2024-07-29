@@ -55,8 +55,6 @@ public record ChangeTaskStatusCommand(
 
 
             task.ChangeStatus(request.TaskProgress);
-
-            await _taskRepository.Update(task, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return Result.Ok(task.Id.Value);

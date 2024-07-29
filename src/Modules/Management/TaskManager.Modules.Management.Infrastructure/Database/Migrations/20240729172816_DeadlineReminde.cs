@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class DeadlineReminde : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,11 +37,12 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TaskName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Deadline = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Deadline = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Priority = table.Column<bool>(type: "boolean", nullable: false),
-                    Progress = table.Column<int>(type: "integer", nullable: false),
-                    AssignedUserId = table.Column<Guid>(type: "uuid", nullable: false)
+                    Progress = table.Column<string>(type: "text", nullable: false),
+                    AssignedUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReminderSent = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {

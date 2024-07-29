@@ -13,7 +13,8 @@ public class TaskItem : AggregateRoot<TaskItemId>
     public DateTime Deadline { get; private set; }
     public bool Priority { get; private set; }
     public TaskProgress Progress { get; private set; }
-    public UserId? AssignedUserId { get; set; }
+    public UserId? AssignedUserId { get; private set; }
+    public bool ReminderSent { get; private set; }
 
     protected TaskItem()
     {
@@ -29,6 +30,7 @@ public class TaskItem : AggregateRoot<TaskItemId>
         Priority = priority;
         Progress = progress;
         AssignedUserId = assignerUserId;
+        ReminderSent = false;
     }
 
     public static TaskItem Create(Name taskName, Description description, DateTime deadline,

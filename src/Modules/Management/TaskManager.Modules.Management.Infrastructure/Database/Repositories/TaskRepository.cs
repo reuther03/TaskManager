@@ -13,7 +13,7 @@ internal class TaskRepository : ITaskRepository
         _context = context;
     }
 
-    public async Task<TaskItem> GetByIdAsync(TaskItemId taskItemId, CancellationToken cancellationToken)
+    public async Task<TaskItem?> GetByIdAsync(TaskItemId taskItemId, CancellationToken cancellationToken)
         => await _context.Tasks.FirstOrDefaultAsync(x => x.Id == taskItemId, cancellationToken);
 
     public async Task<IEnumerable<TaskItem>> GetAllAsync(CancellationToken cancellationToken)

@@ -12,8 +12,8 @@ using TaskManager.Modules.Management.Infrastructure.Database;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ManagementsDbContext))]
-    [Migration("20240726014620_TaskProgressAsString")]
-    partial class TaskProgressAsString
+    [Migration("20240729172816_DeadlineReminde")]
+    partial class DeadlineReminde
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.Property<string>("Progress")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("ReminderSent")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("TaskName")
                         .IsRequired()

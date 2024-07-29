@@ -15,7 +15,7 @@ internal class TeamRepository : ITeamRepository
         _teams = _context.Teams;
     }
 
-    public Task<Team> GetByIdAsync(TeamId id, CancellationToken cancellationToken = default)
+    public Task<Team?> GetByIdAsync(TeamId id, CancellationToken cancellationToken = default)
         => _teams.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
     public Task GetTeamMembersAsync(TeamId id, CancellationToken cancellationToken = default)
@@ -26,10 +26,4 @@ internal class TeamRepository : ITeamRepository
 
     public async Task AddAsync(Team team, CancellationToken cancellationToken = default)
         => await _teams.AddAsync(team, cancellationToken);
-
-    public async Task UpdateAsync(Team team, CancellationToken cancellationToken = default)
-    {
-        _teams.Update(team);
-        await _context.SaveChangesAsync(cancellationToken);
-    }
 }

@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>584a2244-6708-48f1-9a03-50591fb48e5c</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,4 +20,9 @@
         <ProjectReference Include="..\..\Modules\Users\TaskManager.Modules.Users.Api\TaskManager.Modules.Users.Api.csproj"/>
         <ProjectReference Include="..\..\Shared\TaskManager.Shared.Infrastructure\TaskManager.Shared.Infrastructure.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+
+    </ItemGroup>
+
 </Project>

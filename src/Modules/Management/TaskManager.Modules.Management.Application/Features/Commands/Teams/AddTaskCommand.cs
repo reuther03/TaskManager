@@ -3,6 +3,7 @@ using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Abstractions.Services;
+using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Repositories;
 using TaskManager.Modules.Management.Domain.TaskItems;
 using TaskManager.Modules.Management.Domain.TeamMembers;
@@ -24,24 +25,23 @@ public record AddTaskCommand(
         private readonly IUserService _userService;
         private readonly ITaskRepository _taskRepository;
         private readonly ITeamRepository _teamRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public Handler(
             ITeamMemberRepository memberRepository,
             IUserService userService,
             ITaskRepository taskRepository,
-            ITeamRepository teamRepository)
+            ITeamRepository teamRepository, IUnitOfWork unitOfWork)
         {
             _memberRepository = memberRepository;
             _userService = userService;
             _taskRepository = taskRepository;
             _teamRepository = teamRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result<Guid>> Handle(AddTaskCommand request, CancellationToken cancellationToken)
         {
-            if (!_userService.IsAuthenticated)
-                return Result<Guid>.BadRequest("User is not authenticated");
-
             var currentUser = await _memberRepository.GetByIdAsync(_userService.UserId, cancellationToken);
 
             if (currentUser.TeamId != TeamId.From(request.CurrentTeamId) && currentUser.TeamRole is not (TeamRole.Admin or TeamRole.Leader))
@@ -71,7 +71,7 @@ public record AddTaskCommand(
             team.AddTask(task);
 
             await _taskRepository.AddAsync(task, cancellationToken);
-            await _teamRepository.UpdateAsync(team, cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Result.Ok(task.Id.Value);
         }

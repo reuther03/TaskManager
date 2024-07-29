@@ -12,8 +12,8 @@ using TaskManager.Modules.Users.Infrastructure.Database;
 namespace TaskManager.Modules.Users.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20240723170623_FixedUserFullNameError")]
-    partial class FixedUserFullNameError
+    [Migration("20240729164304_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

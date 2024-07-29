@@ -7,7 +7,7 @@ using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Application.Features.Commands.Teams;
 
-public record ChangeMemberRoleCommand(Guid CurrentTeamId, Guid MemberId, int Role) : ICommand<Guid>
+public record ChangeMemberRoleCommand(Guid CurrentTeamId, Guid MemberId, TeamRole Role) : ICommand<Guid>
 {
     internal sealed class Handler : ICommandHandler<ChangeMemberRoleCommand, Guid>
     {
@@ -46,15 +46,13 @@ public record ChangeMemberRoleCommand(Guid CurrentTeamId, Guid MemberId, int Rol
             if (!await _memberRepository.InSameTeamAsync(currentUser.UserId, member.UserId, team.Id, cancellationToken))
                 return Result<Guid>.BadRequest("Member is not a member of this team");
 
-            if (request.Role != Leader && request.Role != Member) // 1 - Leader, 2 - Member
+            if (request.Role != TeamRole.Leader && request.Role != TeamRole.Member) // 1 - Leader, 2 - Member
                 return Result<Guid>.BadRequest("Invalid role");
 
             if (member.TeamRole == TeamRole.Admin)
                 return Result<Guid>.BadRequest("Cannot change role of admin");
 
-
-            var memberRole = request.Role == Leader ? TeamRole.Leader : TeamRole.Member;
-            member.ChangeRole(memberRole);
+            member.ChangeRole(request.Role);
 
             await _memberRepository.UpdateAsync(member, cancellationToken);
 
