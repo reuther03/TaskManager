@@ -7,7 +7,7 @@ using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Infrastructure.Database;
 
-internal class ManagementsDbContext : DbContext, IManagementsDbContext
+internal sealed class ManagementsDbContext : DbContext, IManagementsDbContext
 {
     public DbSet<Team> Teams => Set<Team>();
     public DbSet<TaskItem> Tasks => Set<TaskItem>();

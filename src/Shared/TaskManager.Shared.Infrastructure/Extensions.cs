@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TaskManager.Abstractions.Email;
 using TaskManager.Abstractions.Modules;
 using TaskManager.Infrastructure.Api;
 using TaskManager.Infrastructure.Auth;
@@ -42,6 +43,7 @@ internal static class Extensions
         services.AddAuth(configuration);
         services.AddDecorators();
         services.AddHostedService<AppInitializer>();
+        services.Configure<EmailSettings>(configuration.GetRequiredSection(EmailSettings.SectionName));
         services.AddServices();
         services.AddPostgres();
         services.AddMediatrWithFilters(assemblies);

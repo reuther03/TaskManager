@@ -41,7 +41,7 @@ public record SignUpCommand(string FullName, string Email, string Password) : IC
             await _userRepository.AddAsync(user, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
 
-            await _publisher.Publish(new UserCreated(
+            await _publisher.Publish(new UserCreatedEvent(
                 user.Id,
                 user.FullName,
                 user.Email

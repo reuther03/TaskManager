@@ -1,5 +1,4 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives;
-using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Domain.TaskItems;
 

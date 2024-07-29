@@ -13,7 +13,7 @@ public abstract class BaseUnitOfWork<T> : IBaseUnitOfWork where T : DbContext
         _context = context;
     }
 
-    public async Task<Result> CommitAsync(CancellationToken cancellationToken = default)
+    public virtual async Task<Result> CommitAsync(CancellationToken cancellationToken = default)
     {
         bool commitStatus;
 
