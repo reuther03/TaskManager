@@ -59,6 +59,7 @@ public class TaskDeadlineReminderJob : BackgroundService
                      """);
                 await emailSender.Send(email);
                 userTask.Task.ChangeReminderSent();
+                await context.SaveChangesAsync(stoppingToken);
             }
 
             await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
