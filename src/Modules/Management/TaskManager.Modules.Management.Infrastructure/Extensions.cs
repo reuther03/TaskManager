@@ -5,6 +5,7 @@ using TaskManager.Modules.Management.Application.Database.Abstractions;
 using TaskManager.Modules.Management.Application.Database.Repositories;
 using TaskManager.Modules.Management.Infrastructure.Database;
 using TaskManager.Modules.Management.Infrastructure.Database.Repositories;
+using TaskManager.Modules.Management.Infrastructure.Jobs;
 
 namespace TaskManager.Modules.Management.Infrastructure;
 
@@ -20,6 +21,8 @@ public static class Extensions
             .AddScoped<ITeamMemberRepository, TeamMemberRepository>()
             .AddScoped<ITaskRepository, TaskRepository>()
             .AddUnitOfWork<IUnitOfWork, ManagementUnitOfWork>();
+
+        services.AddHostedService<TaskDeadlineReminderJob>();
 
         return services;
     }

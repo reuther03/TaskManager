@@ -60,4 +60,7 @@ public class TaskItem : AggregateRoot<TaskItemId>
 
         Progress = progress;
     }
+
+    public void ChangeReminderSent()
+        => ReminderSent = true;
 }
