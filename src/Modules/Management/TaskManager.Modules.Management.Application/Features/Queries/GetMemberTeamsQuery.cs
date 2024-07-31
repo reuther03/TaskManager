@@ -27,7 +27,7 @@ public record GetMemberTeamsQuery(int Page = 1, int PageSize = 10) : IQuery<Pagi
             if (user == null)
                 return Result<PaginatedList<TeamDto>>.NotFound("User not found");
 
-            var teams =  _dbContext.Teams.Where(x => x.TeamMembers.Any(z => z.UserId == user.Id))
+            var teams = _dbContext.Teams.Where(x => x.TeamMembers.Any(z => z.UserId == user.Id))
                 .Skip((query.Page - 1) * query.PageSize)
                 .Take(query.PageSize).AsEnumerable()
                 .Select(TeamDto.AsDto)

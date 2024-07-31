@@ -12,8 +12,8 @@ using TaskManager.Modules.Management.Infrastructure.Database;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ManagementsDbContext))]
-    [Migration("20240729172816_DeadlineReminde")]
-    partial class DeadlineReminde
+    [Migration("20240730010832_TeamProgress")]
+    partial class TeamProgress
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,6 +116,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<double>("Progress")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
