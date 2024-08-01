@@ -11,12 +11,12 @@ const form = reactive({
 })
 
 const handleSubmit = async () => {
-  const newUser = {
+  const user = {
     email: form.email,
     password: form.password
   }
   try {
-    const result = await axiosService.post<IResult<string>>('/users-module/Users/login', newUser)
+    const result = await axiosService.post<IResult<string>>('/users-module/Users/login', user)
 
     if (result.data.isSuccess) {
       localStorage.setItem('token', result.data.value!)
@@ -29,13 +29,13 @@ const handleSubmit = async () => {
 
     await router.push('/')
   } catch (e) {
-    console.error('Error fetching job', e)
+    console.error('Error', e)
   }
 }
 </script>
 
 <template>
-  <section class="bg-green-50">
+  <section class="min-h-screen bg-blue-50">
     <div class="container m-auto max-w-2xl py-24">
       <div class="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
         <form @submit.prevent="handleSubmit">

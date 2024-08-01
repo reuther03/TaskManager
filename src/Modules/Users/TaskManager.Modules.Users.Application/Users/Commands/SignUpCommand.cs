@@ -29,9 +29,8 @@ public record SignUpCommand(string FullName, string Email, string Password) : IC
         public async Task<Result<Guid>> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
             if (await _userRepository.ExistsWithEmailAsync(new Email(request.Email), cancellationToken))
-            {
                 return Result<Guid>.BadRequest("User with this email already exists.");
-            }
+
 
             var user = User.Create(
                 new Name(request.FullName),
