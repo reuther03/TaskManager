@@ -29,7 +29,7 @@ const router = createRouter({
       meta: {
         showNavbar: false
       }
-    },
+    }
   ]
 })
 

@@ -18,6 +18,8 @@ namespace TaskManager.Infrastructure;
 
 internal static class Extensions
 {
+    private const string CorsPolicy = "cors";
+
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<Assembly> assemblies, IList<IModule> modules,
         IConfiguration configuration)
     {
@@ -39,6 +41,15 @@ internal static class Extensions
             }
         }
 
+        services.AddCors(cors =>
+        {
+            cors.AddPolicy(CorsPolicy, x =>
+            {
+                x.WithOrigins("*")
+                    .WithMethods("POST", "PUT", "DELETE")
+                    .WithHeaders("Content-Type", "Authorization");
+            });
+        });
         services.AddSwagger();
         services.AddAuth(configuration);
         services.AddDecorators();
@@ -71,6 +82,7 @@ internal static class Extensions
 
     public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
     {
+        app.UseCors(CorsPolicy);
         app.UseSwagger();
         app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Task Manager API"); });
         app.UseAuthentication();
