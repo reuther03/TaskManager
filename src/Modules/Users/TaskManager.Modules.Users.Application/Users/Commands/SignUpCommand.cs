@@ -11,7 +11,7 @@ using UserPassword = TaskManager.Modules.Users.Domain.Users.ValueObjects.Passwor
 
 namespace TaskManager.Modules.Users.Application.Users.Commands;
 
-public record SignUpCommand(string FullName, string Email, string Password) : ICommand<Guid>
+public record SignUpCommand(string FullName, string Email, string Password, string ProfilePictureUrl) : ICommand<Guid>
 {
     internal sealed class Handler : ICommandHandler<SignUpCommand, Guid>
     {
@@ -35,16 +35,19 @@ public record SignUpCommand(string FullName, string Email, string Password) : IC
             var user = User.Create(
                 new Name(request.FullName),
                 new Email(request.Email),
-                UserPassword.Create(request.Password));
+                UserPassword.Create(request.Password),
+                request.ProfilePictureUrl);
 
             await _userRepository.AddAsync(user, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             await _publisher.Publish(new UserCreatedEvent(
-                user.Id,
-                user.FullName,
-                user.Email
-            ), cancellationToken);
+                    user.Id,
+                    user.FullName,
+                    user.Email,
+                    user.ProfilePictureUrl
+                ),
+                cancellationToken);
 
             return Result.Ok(user.Id.Value);
         }

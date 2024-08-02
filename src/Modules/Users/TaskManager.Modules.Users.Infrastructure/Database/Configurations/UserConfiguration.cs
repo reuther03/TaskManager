@@ -31,6 +31,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(x => x.Value, x => new Password(x))
             .IsRequired();
 
+        builder.Property(x => x.ProfilePictureUrl)
+            .HasMaxLength(2000)
+            .IsRequired();
+
         builder.HasIndex(x => x.Email).IsUnique();
     }
 }

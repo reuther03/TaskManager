@@ -10,18 +10,20 @@ public class User : AggregateRoot<UserId>
     public Name FullName { get; private set; }
     public Email Email { get; private set; }
     public Password Password { get; private set; }
+    public string ProfilePictureUrl { get; private set; }
 
     protected User()
     {
     }
 
-    private User(UserId id, Name fullName, Email email, Password password) : base(id)
+    private User(UserId id, Name fullName, Email email, Password password, string profilePictureUrl) : base(id)
     {
         FullName = fullName;
         Email = email;
         Password = password;
+        ProfilePictureUrl = profilePictureUrl;
     }
 
-    public static User Create(string fullName, string email, string password)
-        => new User(UserId.New(), fullName, email, password);
+    public static User Create(string fullName, string email, string password, string profilePictureUrl)
+        => new User(UserId.New(), fullName, email, password, profilePictureUrl);
 }
