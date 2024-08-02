@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Modules.Users.Application.Users.Commands;
 
@@ -22,6 +23,14 @@ internal class UsersController : BaseController
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginCommand request, CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPost("add-profile-picture")]
+    [Authorize]
+    public async Task<IActionResult> AddProfilePicture([FromForm] AddProfilePicture request, CancellationToken cancellationToken)
     {
         var result = await _sender.Send(request, cancellationToken);
         return Ok(result);

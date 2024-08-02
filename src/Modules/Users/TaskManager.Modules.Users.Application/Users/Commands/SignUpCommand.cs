@@ -6,12 +6,12 @@ using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Modules.Users.Application.Abstractions;
 using TaskManager.Modules.Users.Application.Abstractions.Database.Repositories;
-using TaskManager.Modules.Users.Domain.Users.Entities;
-using UserPassword = TaskManager.Modules.Users.Domain.Users.ValueObjects.Password;
+using TaskManager.Modules.Users.Domain.Users;
+using UserPassword = TaskManager.Modules.Users.Domain.Users.Password;
 
 namespace TaskManager.Modules.Users.Application.Users.Commands;
 
-public record SignUpCommand(string FullName, string Email, string Password, string ProfilePictureUrl) : ICommand<Guid>
+public record SignUpCommand(string FullName, string Email, string Password) : ICommand<Guid>
 {
     internal sealed class Handler : ICommandHandler<SignUpCommand, Guid>
     {
@@ -35,8 +35,7 @@ public record SignUpCommand(string FullName, string Email, string Password, stri
             var user = User.Create(
                 new Name(request.FullName),
                 new Email(request.Email),
-                UserPassword.Create(request.Password),
-                request.ProfilePictureUrl);
+                UserPassword.Create(request.Password));
 
             await _userRepository.AddAsync(user, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
@@ -44,8 +43,7 @@ public record SignUpCommand(string FullName, string Email, string Password, stri
             await _publisher.Publish(new UserCreatedEvent(
                     user.Id,
                     user.FullName,
-                    user.Email,
-                    user.ProfilePictureUrl
+                    user.Email
                 ),
                 cancellationToken);
 

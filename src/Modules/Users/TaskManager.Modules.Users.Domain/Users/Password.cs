@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using TaskManager.Abstractions.Exception;
 using TaskManager.Abstractions.Kernel.Primitives;
 
-namespace TaskManager.Modules.Users.Domain.Users.ValueObjects;
+namespace TaskManager.Modules.Users.Domain.Users;
 
 public record Password : ValueObject
 {

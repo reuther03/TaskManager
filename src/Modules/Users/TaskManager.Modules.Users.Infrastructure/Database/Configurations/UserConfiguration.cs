@@ -2,8 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Abstractions.Kernel.ValueObjects.User;
-using TaskManager.Modules.Users.Domain.Users.Entities;
-using TaskManager.Modules.Users.Domain.Users.ValueObjects;
+using TaskManager.Modules.Users.Domain.Users;
 
 namespace TaskManager.Modules.Users.Infrastructure.Database.Configurations;
 
@@ -31,9 +30,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(x => x.Value, x => new Password(x))
             .IsRequired();
 
-        builder.Property(x => x.ProfilePictureUrl)
-            .HasMaxLength(2000)
-            .IsRequired();
+        builder.Property(x => x.ProfilePicture)
+            .IsRequired(false);
 
         builder.HasIndex(x => x.Email).IsUnique();
     }

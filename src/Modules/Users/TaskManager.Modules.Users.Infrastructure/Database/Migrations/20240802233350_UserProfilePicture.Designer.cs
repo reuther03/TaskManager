@@ -12,7 +12,7 @@ using TaskManager.Modules.Users.Infrastructure.Database;
 namespace TaskManager.Modules.Users.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20240802163100_UserProfilePicture")]
+    [Migration("20240802233350_UserProfilePicture")]
     partial class UserProfilePicture
     {
         /// <inheritdoc />
@@ -26,7 +26,7 @@ namespace TaskManager.Modules.Users.Infrastructure.Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("TaskManager.Modules.Users.Domain.Users.Entities.User", b =>
+            modelBuilder.Entity("TaskManager.Modules.Users.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -46,10 +46,8 @@ namespace TaskManager.Modules.Users.Infrastructure.Database.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("ProfilePictureUrl")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

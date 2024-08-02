@@ -23,7 +23,7 @@ namespace TaskManager.Modules.Users.Infrastructure.Database.Migrations
                     FullName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    ProfilePictureUrl = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false)
+                    ProfilePicture = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskManager.Modules.Users.Domain.Users.Entities;
+using TaskManager.Modules.Users.Domain.Users;
 
 namespace TaskManager.Modules.Users.Application.Abstractions.Database;
 

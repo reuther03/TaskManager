@@ -10,6 +10,7 @@ using TaskManager.Infrastructure.Api;
 using TaskManager.Infrastructure.Auth;
 using TaskManager.Infrastructure.Postgres;
 using TaskManager.Infrastructure.Services;
+using TaskManager.Infrastructure.Services.CloudinaryImg;
 using TaskManager.Infrastructure.Swagger;
 
 [assembly: InternalsVisibleTo("TaskManager.Bootstrapper")]
@@ -47,9 +48,11 @@ internal static class Extensions
             {
                 x.WithOrigins("*")
                     .WithMethods("POST", "PUT", "DELETE")
-                    .WithHeaders("Content-Type", "Authorization");
+                    .WithHeaders("Content-Type", "Authorization", "multipart/form-data");
             });
         });
+
+        services.AddCloudinary(configuration);
         services.AddSwagger();
         services.AddAuth(configuration);
         services.AddDecorators();
