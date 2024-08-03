@@ -16,7 +16,7 @@ const state = reactive({
     fullName: '',
     email: '',
     profilePicture: '',
-    loggedIn: !!tokenService.getToken()
+    loggedIn: tokenService.getToken() ? true : false
   }
 })
 const handleLogout = () => {
@@ -62,9 +62,9 @@ if (state.user.loggedIn) {
                   <v-menu
                     transition="scale-transition"
                   >
-                    <template v-slot:activator="{ props }">
-                      <v-btn v-bind="props" icon="">
-                        <img :src="state.user.profilePicture" alt="">
+                    <template v-slot:activator="{ props } ">
+                      <v-btn color="blue-darken-4" v-bind="props" icon="" class="profile-picture-btn">
+                        <img class="user" :src="state.user.profilePicture" alt="profile picture">
                       </v-btn>
                     </template>
 
@@ -91,4 +91,31 @@ if (state.user.loggedIn) {
   </nav>
 </template>
 
-<style scoped></style>
+<style scoped>
+.profile-picture-btn {
+  width: 50px; /* Adjust the size as needed */
+  height: 50px; /* Adjust the size as needed */
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0px;
+  margin: 0px;
+}
+
+.user {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  margin-top: -1px;
+  border-radius: 50%;
+
+  object-fit: cover;
+}
+
+.profile-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
