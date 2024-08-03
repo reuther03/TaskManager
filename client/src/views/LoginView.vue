@@ -3,6 +3,7 @@ import { reactive } from 'vue'
 import router from '@/router'
 import { useToast } from 'vue-toastification'
 import axiosService from '@/services/axiosService'
+import tokenService from '@/services/tokenService'
 const toast = useToast()
 
 const form = reactive({
@@ -16,10 +17,10 @@ const handleSubmit = async () => {
     password: form.password
   }
   try {
-    const result = await axiosService.post<IResult<string>>('/users-module/Users/login', user)
+    const result = await axiosService.post<ILoginResult>('/users-module/Users/login', user)
 
     if (result.data.isSuccess) {
-      localStorage.setItem('token', result.data.value!)
+      tokenService.setToken(result.data.value.token)
       toast.success('Logged in successfully')
     } else {
       console.error('Error logging in', result.data.message)

@@ -1,4 +1,5 @@
 ﻿import axios from 'axios'
+import tokenService from '@/services/tokenService'
 
 const axiosService = axios.create({
   baseURL: 'http://localhost:5000/',
@@ -6,7 +7,7 @@ const axiosService = axios.create({
 
 axiosService.interceptors.request.use(
   config => {
-    const token = localStorage.getItem('token');
+    const token = tokenService.getToken()
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }

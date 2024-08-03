@@ -1,5 +1,5 @@
 ﻿interface IResult<T = any> {
-  value?: T
+  value: T
   isSuccess: boolean
   statusCode: number
   message: string
