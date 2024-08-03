@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Modules.Users.Application.Users.Commands;
+using TaskManager.Modules.Users.Application.Users.Queries;
 
 namespace TaskManager.Modules.Users.Api.Controllers;
 
@@ -12,6 +13,14 @@ internal class UsersController : BaseController
     public UsersController(ISender sender)
     {
         _sender = sender;
+    }
+
+    [HttpGet("current-user")]
+    [Authorize]
+    public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(new GetCurrentUserQuery(), cancellationToken);
+        return Ok(result);
     }
 
     [HttpPost("sign-up")]

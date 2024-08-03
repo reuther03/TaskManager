@@ -48,7 +48,7 @@ internal static class Extensions
             {
                 x.WithOrigins("*")
                     .WithMethods("POST", "PUT", "DELETE")
-                    .WithHeaders("Content-Type", "Authorization", "multipart/form-data");
+                    .WithHeaders("Content-Type", "Authorization");
             });
         });
 
