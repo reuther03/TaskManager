@@ -1,5 +1,5 @@
 ﻿interface IUser {
-  value?: {
+  value: {
     fullName: string
     email: string
     profilePicture: string

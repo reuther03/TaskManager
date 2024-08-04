@@ -5,10 +5,11 @@ import { onMounted, reactive } from 'vue'
 import tokenService from '@/services/tokenService'
 import router from '@/router'
 import axiosService from '@/services/axiosService'
+import TeamListComponent from '@/components/TeamListComponent.vue'
 
 const items = reactive([
-  { icon: 'mdi-account', title: 'Account' },
-  { icon: 'mdi-logout', title: 'Logout' }
+  { title: 'Account', action: 'account' },
+  { title: 'Logout', action: 'logout' }
 ])
 
 const state = reactive({
@@ -16,14 +17,24 @@ const state = reactive({
     fullName: '',
     email: '',
     profilePicture: '',
-    loggedIn: tokenService.getToken() ? true : false
+    loggedIn: !!tokenService.getToken()
   }
 })
+
+const handleMenuItemClick = (action: string) => {
+  if (action === 'account') {
+    router.push('/account')
+  } else if (action === 'logout') {
+    handleLogout()
+  }
+}
+
 const handleLogout = () => {
   tokenService.removeToken()
   state.user.loggedIn = false
   router.push('/')
 }
+
 
 if (state.user.loggedIn) {
   onMounted(async () => {
@@ -32,7 +43,6 @@ if (state.user.loggedIn) {
       state.user.fullName = response.data.value.fullName
       state.user.email = response.data.value.email
       state.user.profilePicture = response.data.value.profilePicture
-      console.log('User', state.user)
     } catch (e) {
       console.error('Error fetching user', e)
     }
@@ -54,11 +64,10 @@ if (state.user.loggedIn) {
           <div class="md:ml-auto">
             <div class="flex space-x-2">
               <div class="flex space-x-2" v-if="state.user.loggedIn">
-                <RouterLink to="/" @click="handleLogout"
-                            class="text-white bg-blue-900 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 m-auto">
-                  Logout
-                </RouterLink>
                 <div class="d-flex justify-space-around">
+                  <div class="justify-center ma-2">
+                    <TeamListComponent />
+                  </div>
                   <v-menu
                     transition="scale-transition"
                   >
@@ -70,6 +79,8 @@ if (state.user.loggedIn) {
 
                     <v-list>
                       <v-list-item
+                        class="hover:bg-blue-500 hover:text-white hover:shadow-lg cursor-pointer"
+                        @click="handleMenuItemClick(item.action)"
                         v-for="(item, i) in items"
                         :key="i"
                       >
@@ -93,12 +104,12 @@ if (state.user.loggedIn) {
 
 <style scoped>
 .profile-picture-btn {
-  width: 50px; /* Adjust the size as needed */
-  height: 50px; /* Adjust the size as needed */
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   overflow: hidden;
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
 }
 
 .user {
@@ -107,15 +118,6 @@ if (state.user.loggedIn) {
   height: 50px;
   margin-top: -1px;
   border-radius: 50%;
-
   object-fit: cover;
-}
-
-.profile-icon {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 </style>
