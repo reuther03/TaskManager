@@ -3,6 +3,8 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import AccountView from '@/views/AccountView.vue'
+import TeamsView from '@/views/TeamsView.vue'
+import TeamView from '@/views/TeamsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +37,14 @@ const router = createRouter({
       path: '/account',
       name: 'Account',
       component: AccountView,
+      meta: {
+        showNavbar: true
+      }
+    },
+    {
+      path: '/teams',
+      name: 'Teams',
+      component: TeamsView,
       meta: {
         showNavbar: true
       }

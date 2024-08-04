@@ -5,11 +5,11 @@ import { onMounted, reactive } from 'vue'
 import tokenService from '@/services/tokenService'
 import router from '@/router'
 import axiosService from '@/services/axiosService'
-import TeamListComponent from '@/components/TeamListComponent.vue'
 
 const items = reactive([
   { title: 'Account', action: 'account' },
-  { title: 'Logout', action: 'logout' }
+  { title: 'Logout', action: 'logout' },
+  { title: 'Teams', action: 'teams'}
 ])
 
 const state = reactive({
@@ -26,6 +26,8 @@ const handleMenuItemClick = (action: string) => {
     router.push('/account')
   } else if (action === 'logout') {
     handleLogout()
+  } else if (action === 'teams') {
+    router.push('/teams')
   }
 }
 
@@ -61,13 +63,14 @@ if (state.user.loggedIn) {
             <img class="h-10 w-auto" :src="logo" alt="Task Manager" />
             <span class="hidden md:block text-white text-2xl font-bold ml-2">Task Manager</span>
           </RouterLink>
+          <div class="justify-center ma-2">
+          </div>
+
           <div class="md:ml-auto">
             <div class="flex space-x-2">
               <div class="flex space-x-2" v-if="state.user.loggedIn">
                 <div class="d-flex justify-space-around">
-                  <div class="justify-center ma-2">
-                    <TeamListComponent />
-                  </div>
+
                   <v-menu
                     transition="scale-transition"
                   >
