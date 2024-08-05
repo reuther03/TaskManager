@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TaskManager.Abstractions.Email;
 using TaskManager.Abstractions.Kernel.Primitives;
+using TaskManager.Modules.Management.Domain.TaskItems;
 using TaskManager.Modules.Management.Infrastructure.Database;
 
 namespace TaskManager.Modules.Management.Infrastructure.Jobs;
@@ -27,6 +28,15 @@ public class TaskDeadlineReminderJob : BackgroundService
             var tasks = await context.Tasks
                 .Where(x => x.Deadline.Date >= DateTime.Today && x.Deadline.Date <= DateTime.Today.AddDays(7) && !x.ReminderSent)
                 .ToListAsync(stoppingToken);
+
+            var delayedTasks = await context.Tasks
+                .Where(x => x.Deadline.Date < x.CreatedAt)
+                .ToListAsync(stoppingToken);
+
+            foreach (var delayedTask in delayedTasks)
+            {
+                delayedTask.ChangeStatus(TaskProgress.Delayed);
+            }
 
             var taskUsers = await context.TeamMembers
                 .Where(x => tasks.Select(y => y.AssignedUserId).Contains(x.UserId))
@@ -57,12 +67,13 @@ public class TaskDeadlineReminderJob : BackgroundService
                          </div>
                      </div>
                      """);
+
                 await emailSender.Send(email);
                 userTask.Task.ChangeReminderSent();
-                await context.SaveChangesAsync(stoppingToken);
             }
 
-            await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
+            await context.SaveChangesAsync(stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }
     }
 }
