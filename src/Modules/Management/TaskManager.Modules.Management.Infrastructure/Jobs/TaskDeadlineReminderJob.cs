@@ -29,20 +29,12 @@ public class TaskDeadlineReminderJob : BackgroundService
                 .Where(x => x.Deadline.Date >= DateTime.Today && x.Deadline.Date <= DateTime.Today.AddDays(7) && !x.ReminderSent)
                 .ToListAsync(stoppingToken);
 
-            var delayedTasks = await context.Tasks
-                .Where(x => x.Deadline.Date < x.CreatedAt)
-                .ToListAsync(stoppingToken);
-
-            foreach (var delayedTask in delayedTasks)
-            {
-                delayedTask.ChangeStatus(TaskProgress.Delayed);
-            }
-
             var taskUsers = await context.TeamMembers
                 .Where(x => tasks.Select(y => y.AssignedUserId).Contains(x.UserId))
                 .ToListAsync(stoppingToken);
 
             var taskByUser = tasks.Join(taskUsers, x => x.AssignedUserId, y => y.UserId, (x, y) => new { Task = x, User = y });
+
 
             foreach (var userTask in taskByUser)
             {
@@ -72,8 +64,17 @@ public class TaskDeadlineReminderJob : BackgroundService
                 userTask.Task.ChangeReminderSent();
             }
 
+            var delayedTasks = await context.Tasks
+                .Where(x => x.Deadline.Date < x.CreatedAt && x.Progress != TaskProgress.Completed)
+                .ToListAsync(stoppingToken);
+
+            foreach (var delayedTask in delayedTasks)
+            {
+                delayedTask.ChangeStatus(TaskProgress.Delayed);
+            }
+
             await context.SaveChangesAsync(stoppingToken);
-            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
         }
     }
 }

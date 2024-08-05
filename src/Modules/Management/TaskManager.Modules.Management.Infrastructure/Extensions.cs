@@ -23,6 +23,7 @@ public static class Extensions
             .AddUnitOfWork<IUnitOfWork, ManagementUnitOfWork>();
 
         services.AddHostedService<TaskDeadlineReminderJob>();
+        services.AddHostedService<TeamProgressJob>();
 
         return services;
     }
