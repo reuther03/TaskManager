@@ -23,8 +23,21 @@ public record GetTeamQuery(Guid CurrentTeamId) : IQuery<TeamDetailsDto>
 
         public async Task<Result<TeamDetailsDto>> Handle(GetTeamQuery request, CancellationToken cancellationToken)
         {
+            //tak byl bug
+            // var user = await _dbContext.TeamMembers
+            //     .FirstOrDefaultAsync(x => x.UserId == _userService.UserId, cancellationToken);
+            //
+            // if (user is null)
+            //     return Result.Unauthorized<TeamDetailsDto>("User not found");
+            //
+            // if (user.TeamId != TeamId.From(request.CurrentTeamId))
+            //     return Result.BadRequest<TeamDetailsDto>("User is not a member of the team");
+
+            var userId = _userService.UserId;
+            var teamId = TeamId.From(request.CurrentTeamId);
+
             var user = await _dbContext.TeamMembers
-                .FirstOrDefaultAsync(x => x.UserId == _userService.UserId, cancellationToken);
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.TeamId == teamId, cancellationToken);
 
             if (user is null)
                 return Result.Unauthorized<TeamDetailsDto>("User not found");
