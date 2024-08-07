@@ -1,3 +1,5 @@
+using TaskManager.Abstractions.Kernel.Events;
+
 namespace TaskManager.Abstractions.Kernel.Primitives;
 
 public interface IAggregateRoot

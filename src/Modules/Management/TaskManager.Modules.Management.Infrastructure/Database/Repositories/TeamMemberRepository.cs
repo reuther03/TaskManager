@@ -28,10 +28,4 @@ internal class TeamMemberRepository : ITeamMemberRepository
 
     public Task<bool> MemberInTeamAsync(UserId userId, TeamId teamId, CancellationToken cancellationToken = default)
         => _teamMembers.Select(x => x.UserId == userId && x.TeamId == teamId).AnyAsync(cancellationToken);
-
-    public async Task UpdateAsync(TeamMember member, CancellationToken cancellationToken = default)
-    {
-        _teamMembers.Update(member);
-        await _context.SaveChangesAsync(cancellationToken);
-    }
 }

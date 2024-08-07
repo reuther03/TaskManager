@@ -9,5 +9,4 @@ public interface ITeamMemberRepository
     Task<TeamMember> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default);
     Task<List<TeamMember>> GetTeamMembersAsync(TeamId id, CancellationToken cancellationToken = default);
     Task<bool> InSameTeamAsync(UserId userId1, UserId userId2, TeamId teamId, CancellationToken cancellationToken = default);
-    Task UpdateAsync(TeamMember member, CancellationToken cancellationToken = default);
 }

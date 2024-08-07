@@ -1,5 +1,4 @@
-﻿using TaskManager.Abstractions.Kernel.ValueObjects.User;
-using TaskManager.Modules.Users.Domain.Users;
+﻿using TaskManager.Modules.Users.Domain.Users;
 
 namespace TaskManager.Modules.Users.Application.Abstractions.Database.Repositories;
 

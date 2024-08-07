@@ -41,9 +41,9 @@ public class Team : AggregateRoot<TeamId>
 
     public void AddTask(TaskItem taskItem)
     {
-        if (_taskItemIds.Contains(taskItem.Id))
+        if (_taskItemIds.Contains(taskItem.Id) || _taskItemIds.Count >= 100)
         {
-            throw new InvalidOperationException("Task is already added to the team");
+            throw new InvalidOperationException("Task is already added or team has reached the maximum number of tasks");
         }
 
         _taskItemIds.Add(taskItem.Id);

@@ -14,6 +14,11 @@ internal sealed class ManagementsDbContext : DbContext, IManagementsDbContext
     public DbSet<ManagementUser> Users => Set<ManagementUser>();
     public DbSet<TeamMember> TeamMembers => Set<TeamMember>();
 
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
 
     public ManagementsDbContext()
     {

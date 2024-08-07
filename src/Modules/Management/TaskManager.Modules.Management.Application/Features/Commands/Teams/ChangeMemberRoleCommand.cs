@@ -1,6 +1,7 @@
 ﻿using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Abstractions.Services;
+using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Repositories;
 using TaskManager.Modules.Management.Domain.TeamMembers;
 using TaskManager.Modules.Management.Domain.Teams;
@@ -17,12 +18,14 @@ public record ChangeMemberRoleCommand(Guid CurrentTeamId, Guid MemberId, TeamRol
         private readonly IUserService _userService;
         private readonly ITeamRepository _teamRepository;
         private readonly ITeamMemberRepository _memberRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public Handler(IUserService userService, ITeamRepository teamRepository, ITeamMemberRepository memberRepository)
+        public Handler(IUserService userService, ITeamRepository teamRepository, ITeamMemberRepository memberRepository, IUnitOfWork unitOfWork)
         {
             _userService = userService;
             _teamRepository = teamRepository;
             _memberRepository = memberRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result<Guid>> Handle(ChangeMemberRoleCommand request, CancellationToken cancellationToken)
@@ -53,8 +56,7 @@ public record ChangeMemberRoleCommand(Guid CurrentTeamId, Guid MemberId, TeamRol
                 return Result<Guid>.BadRequest("Cannot change role of admin");
 
             member.ChangeRole(request.Role);
-
-            await _memberRepository.UpdateAsync(member, cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Result.Ok(member.UserId.Value);
         }

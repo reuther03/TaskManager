@@ -1,4 +1,5 @@
-﻿using TaskManager.Abstractions.Exception;
+﻿using TaskManager.Abstractions.Events.DomainEvents;
+using TaskManager.Abstractions.Exception;
 using TaskManager.Abstractions.Kernel.Primitives;
 using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Abstractions.Kernel.ValueObjects.User;
@@ -55,10 +56,14 @@ public class TaskItem : AggregateRoot<TaskItemId>
 
     public void ChangeStatus(TaskProgress progress)
     {
+        var task = this;
+
         if (Progress == TaskProgress.Completed)
             throw new DomainException("Task is already done.");
 
+
         Progress = progress;
+        task.RaiseDomainEvent(new ChangedTaskStatusDomainEvent(task.Id));
     }
 
     public void ChangeReminderSent()

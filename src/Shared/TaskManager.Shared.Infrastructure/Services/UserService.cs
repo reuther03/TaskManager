@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Abstractions.Services;
 using TaskManager.Infrastructure.Auth;
-using Email = TaskManager.Abstractions.Kernel.ValueObjects.User.Email;
 
 namespace TaskManager.Infrastructure.Services;
 

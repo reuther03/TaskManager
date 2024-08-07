@@ -12,4 +12,5 @@ public interface IManagementsDbContext
     DbSet<TaskItem> Tasks { get; }
     DbSet<ManagementUser> Users { get; }
     DbSet<TeamMember> TeamMembers { get; }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
