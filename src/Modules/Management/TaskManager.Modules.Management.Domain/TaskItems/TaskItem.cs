@@ -56,14 +56,15 @@ public class TaskItem : AggregateRoot<TaskItemId>
 
     public void ChangeStatus(TaskProgress progress)
     {
-        var task = this;
-
         if (Progress == TaskProgress.Completed)
             throw new DomainException("Task is already done.");
 
-
         Progress = progress;
-        task.RaiseDomainEvent(new ChangedTaskStatusDomainEvent(task.Id));
+
+        if (Progress is TaskProgress.Completed)
+        {
+            RaiseDomainEvent(new TaskItemCompletedDomainEvent(Id));
+        }
     }
 
     public void ChangeReminderSent()

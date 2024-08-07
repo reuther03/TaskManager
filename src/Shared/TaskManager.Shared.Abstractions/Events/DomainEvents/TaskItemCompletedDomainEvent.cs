@@ -2,4 +2,4 @@
 
 namespace TaskManager.Abstractions.Events.DomainEvents;
 
-public sealed record ChangedTaskStatusDomainEvent(Guid TaskId) : IDomainEvent;
+public sealed record TaskItemCompletedDomainEvent(Guid TaskId) : IDomainEvent;

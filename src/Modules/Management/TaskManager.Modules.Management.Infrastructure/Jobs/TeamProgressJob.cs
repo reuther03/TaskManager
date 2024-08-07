@@ -35,7 +35,7 @@
 //
 //                 var progress = totalTasks == 0 ? 0 : (double)completedTasks / totalTasks * 100;
 //                 if (Math.Abs(progress - team.Progress) > 0.001)
-//                     team.SetProgress(progress);
+//                     team.IncrementCompletedTasks(progress);
 //             }
 //
 //             await context.SaveChangesAsync(stoppingToken);

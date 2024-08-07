@@ -7,7 +7,7 @@ using TaskManager.Modules.Management.Domain.TaskItems;
 
 namespace TaskManager.Modules.Management.Application.Events.DomainEvents;
 
-public class ChangedTaskStatusDomainEventHandler : IDomainEventHandler<ChangedTaskStatusDomainEvent>
+public class ChangedTaskStatusDomainEventHandler : IDomainEventHandler<TaskItemCompletedDomainEvent>
 {
     private readonly IManagementsDbContext _managementsDbContext;
     private readonly IUnitOfWork _unitOfWork;
@@ -18,26 +18,16 @@ public class ChangedTaskStatusDomainEventHandler : IDomainEventHandler<ChangedTa
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(ChangedTaskStatusDomainEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(TaskItemCompletedDomainEvent notification, CancellationToken cancellationToken)
     {
-        var targetTaskId = TaskItemId.From(notification.TaskId);
         var team = await _managementsDbContext.Teams
-            .FirstOrDefaultAsync(x => x.TaskItemIds.Select(y => y.Value).Contains(targetTaskId.Value), cancellationToken);
+            .Where(x => x.TaskItemIds.Select(y => y.Value).Contains(notification.TaskId))
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (team == null)
             return;
 
-        var totalTasks = team.TaskItemIds.Count;
-        var completedTasks = await _managementsDbContext.Tasks
-            .Where(x => team.TaskItemIds.Select(y => y.Value).Contains(x.Id) && x.Progress == TaskProgress.Completed).CountAsync(cancellationToken);
-
-        var progress = totalTasks == 0 ? 0 : (double)completedTasks / totalTasks * 100;
-
-        if (Math.Abs(progress - team.Progress) < 0.01)
-            return;
-
-        progress = Math.Round(progress, 2);
-        team.SetProgress(progress);
+        team.IncrementCompletedTasks(notification.TaskId);
         await _managementsDbContext.SaveChangesAsync(cancellationToken);
     }
 }

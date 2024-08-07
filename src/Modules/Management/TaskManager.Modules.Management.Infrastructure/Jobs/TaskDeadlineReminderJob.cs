@@ -65,7 +65,7 @@ public class TaskDeadlineReminderJob : BackgroundService
             }
 
             var delayedTasks = await context.Tasks
-                .Where(x => x.Deadline.Date < x.CreatedAt && x.Progress != TaskProgress.Completed)
+                .Where(x => x.Deadline.Date < DateTime.UtcNow && x.Progress != TaskProgress.Completed)
                 .ToListAsync(stoppingToken);
 
             foreach (var delayedTask in delayedTasks)

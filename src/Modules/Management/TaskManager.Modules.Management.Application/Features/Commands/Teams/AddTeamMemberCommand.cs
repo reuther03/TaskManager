@@ -1,4 +1,5 @@
-﻿using TaskManager.Abstractions.Kernel.Primitives.Result;
+﻿using System.Text.Json.Serialization;
+using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Abstractions.Services;
 using TaskManager.Modules.Management.Application.Database;
@@ -8,7 +9,10 @@ using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Application.Features.Commands.Teams;
 
-public record AddTeamMemberCommand(Guid UserId, Guid UsersTeamId) : ICommand<Guid>
+public record AddTeamMemberCommand(
+    Guid UserId,
+    [property: JsonIgnore]
+    Guid UsersTeamId) : ICommand<Guid>
 {
     internal sealed class Handler : ICommandHandler<AddTeamMemberCommand, Guid>
     {
@@ -51,7 +55,6 @@ public record AddTeamMemberCommand(Guid UserId, Guid UsersTeamId) : ICommand<Gui
             var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
             if (user is null)
                 return Result<Guid>.NotFound("User not found");
-
 
             var teamMember = TeamMember.Create(user.Id, team.Id, TeamRole.Member);
 

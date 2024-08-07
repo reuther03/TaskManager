@@ -56,7 +56,7 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Progress = table.Column<double>(type: "double precision", nullable: false)
+                    CompletedTasks = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -109,13 +109,13 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("CompletedTasks")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<double>("Progress")
-                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
