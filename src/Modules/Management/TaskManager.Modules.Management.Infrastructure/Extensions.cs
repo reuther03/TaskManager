@@ -3,9 +3,11 @@ using TaskManager.Infrastructure.Postgres;
 using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Abstractions;
 using TaskManager.Modules.Management.Application.Database.Repositories;
+using TaskManager.Modules.Management.Application.Workflows;
 using TaskManager.Modules.Management.Infrastructure.Database;
 using TaskManager.Modules.Management.Infrastructure.Database.Repositories;
 using TaskManager.Modules.Management.Infrastructure.Jobs;
+using TaskManager.Modules.Management.Infrastructure.Workflows;
 
 namespace TaskManager.Modules.Management.Infrastructure;
 
@@ -20,7 +22,8 @@ public static class Extensions
             .AddScoped<IManagementUserRepository, ManagementUserRepository>()
             .AddScoped<ITeamMemberRepository, TeamMemberRepository>()
             .AddScoped<ITaskRepository, TaskRepository>()
-            .AddUnitOfWork<IUnitOfWork, ManagementUnitOfWork>();
+            .AddUnitOfWork<IUnitOfWork, ManagementUnitOfWork>()
+            .AddScoped<IWorkflowEngine, WorkflowEngine>();
 
         services.AddHostedService<TaskDeadlineReminderJob>();
         // services.AddHostedService<TeamProgressJob>();

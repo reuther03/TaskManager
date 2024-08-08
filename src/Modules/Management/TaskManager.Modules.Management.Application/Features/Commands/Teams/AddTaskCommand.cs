@@ -5,6 +5,7 @@ using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Abstractions.Services;
 using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Repositories;
+using TaskManager.Modules.Management.Application.Workflows;
 using TaskManager.Modules.Management.Domain.TaskItems;
 using TaskManager.Modules.Management.Domain.TeamMembers;
 using TaskManager.Modules.Management.Domain.Teams;
@@ -12,7 +13,8 @@ using TaskManager.Modules.Management.Domain.Teams;
 namespace TaskManager.Modules.Management.Application.Features.Commands.Teams;
 
 public record AddTaskCommand(
-    [property: JsonIgnore] Guid CurrentTeamId,
+    [property: JsonIgnore]
+    Guid CurrentTeamId,
     string Name,
     string Description,
     DateTime Deadline,
@@ -25,18 +27,22 @@ public record AddTaskCommand(
         private readonly IUserService _userService;
         private readonly ITaskRepository _taskRepository;
         private readonly ITeamRepository _teamRepository;
+        private readonly IWorkflowEngine _workflowEngine;
         private readonly IUnitOfWork _unitOfWork;
 
         public Handler(
             ITeamMemberRepository memberRepository,
             IUserService userService,
             ITaskRepository taskRepository,
-            ITeamRepository teamRepository, IUnitOfWork unitOfWork)
+            ITeamRepository teamRepository,
+            IWorkflowEngine workflowEngine,
+            IUnitOfWork unitOfWork)
         {
             _memberRepository = memberRepository;
             _userService = userService;
             _taskRepository = taskRepository;
             _teamRepository = teamRepository;
+            _workflowEngine = workflowEngine;
             _unitOfWork = unitOfWork;
         }
 
@@ -54,11 +60,15 @@ public record AddTaskCommand(
 
             //todo:sprobowac zrobic zeby user nie musial podawac swojego id i zeby samo sie pobieralo
 
+            var teamMembers = await _teamRepository.GetCountedTeamMembersAsync(team.Id, cancellationToken);
+
             var assignedUserId = request.AssignedUserId;
-            if (assignedUserId is null || team.TeamMembers.Count == 1)
+            if (teamMembers == 1)
             {
                 assignedUserId = currentUser.UserId;
             }
+
+            assignedUserId ??= await _workflowEngine.AssignMemberToTaskAsync(request.CurrentTeamId, cancellationToken);
 
             var task = TaskItem.Create(
                 new Name(request.Name),

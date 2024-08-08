@@ -35,7 +35,7 @@ public class TaskItem : AggregateRoot<TaskItemId>
     }
 
     public static TaskItem Create(Name taskName, Description description, DateTime deadline,
-        bool priority, Guid? assignerUserId)
+        bool priority, Guid? assignedUserId)
     {
         var groupTask = new TaskItem(
             Guid.NewGuid(),
@@ -45,7 +45,7 @@ public class TaskItem : AggregateRoot<TaskItemId>
             deadline,
             priority,
             TaskProgress.ToDo,
-            assignerUserId
+            assignedUserId
         );
 
         if (deadline < DateTime.Now)
@@ -69,4 +69,7 @@ public class TaskItem : AggregateRoot<TaskItemId>
 
     public void ChangeReminderSent()
         => ReminderSent = true;
+
+    public void AssignUser(UserId userId)
+        => AssignedUserId = userId;
 }

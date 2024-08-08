@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Modules.Management.Application.Database.Repositories;
+using TaskManager.Modules.Management.Domain.TeamMembers;
 using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Infrastructure.Database.Repositories;
@@ -17,6 +18,9 @@ internal class TeamRepository : ITeamRepository
 
     public Task<Team?> GetByIdAsync(TeamId id, CancellationToken cancellationToken = default)
         => _teams.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+    public Task<int> GetCountedTeamMembersAsync(TeamId id, CancellationToken cancellationToken = default)
+        => _teams.Where(x => x.Id == id).SelectMany(x => x.TeamMembers).CountAsync(cancellationToken);
 
     public Task GetTeamMembersAsync(TeamId id, CancellationToken cancellationToken = default)
         => _teams.Where(x => x.Id == id).Select(x => x.TeamMembers).ToListAsync(cancellationToken);
