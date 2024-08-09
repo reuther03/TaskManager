@@ -47,12 +47,19 @@ public record GetTeamQuery(Guid CurrentTeamId) : IQuery<TeamDetailsDto>
 
             var team = await _dbContext.Teams
                 .Include(x => x.TeamMembers)
-                .Include(x => x.TaskItemIds)
                 .FirstOrDefaultAsync(x => x.Id == TeamId.From(request.CurrentTeamId), cancellationToken);
 
-            return team is null
-                ? Result.NotFound<TeamDetailsDto>("Team not found")
-                : Result.Ok(TeamDetailsDto.AsDto(team));
+            if (team is null)
+                return Result.NotFound<TeamDetailsDto>("Team not found");
+
+            var taskItems = await _dbContext.Tasks
+                .Include(x => x.SubTaskItems)
+                .Where(x => team.TaskItemIds.Contains(x.Id))
+                .ToListAsync(cancellationToken);
+
+            var teamDetails = new TeamDetailsDto(team.Name, taskItems.Select(TaskItemIdDto.AsDto).ToList(), team.TeamMembers.Select(TeamMemberIdDto.AsDto).ToList());
+
+            return Result.Ok(teamDetails);
         }
     }
 }

@@ -5,17 +5,14 @@ namespace TaskManager.Modules.Management.Application.Features.Dtos;
 
 public class TeamDetailsDto
 {
-    public string Name { get; init; } = null!;
-    public List<TaskItemId> TaskItems { get; init; } = null!;
-    public List<TeamMemberIdDto> TeamMembers { get; init; } = null!;
+    public string Name { get; init; }
+    public List<TaskItemIdDto> TaskItems { get; init; }
+    public List<TeamMemberIdDto> TeamMembers { get; init; }
 
-    public static TeamDetailsDto AsDto(Team team)
+    public TeamDetailsDto(string name, List<TaskItemIdDto> taskItems, List<TeamMemberIdDto> teamMembers)
     {
-        return new TeamDetailsDto
-        {
-            Name = team.Name,
-            TaskItems = team.TaskItemIds.ToList(),
-            TeamMembers = team.TeamMembers.Select(TeamMemberIdDto.AsDto).ToList()
-        };
+        Name = name;
+        TaskItems = taskItems;
+        TeamMembers = teamMembers;
     }
 }
