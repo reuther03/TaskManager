@@ -42,4 +42,9 @@ public class SubTaskItem : Entity<Guid>
 
         return subTask;
     }
+
+    public void ChangeStatus(TaskProgress progress)
+    {
+        Progress = progress;
+    }
 }

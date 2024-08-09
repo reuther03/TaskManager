@@ -13,7 +13,7 @@ public class TaskItemIdDto
         return new TaskItemIdDto
         {
             TaskId = taskItem.Id,
-            SubTasks = taskItem.SubTaskItems.Select(subTaskItem => SubTaskDto.AsDto((SubTaskItem)subTaskItem)).ToList()
+            SubTasks = taskItem.SubTaskItems.Select(subTaskItem => SubTaskDto.AsDto(subTaskItem)).ToList()
 
         };
     }

@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using TaskManager.Abstractions.Kernel.Pagination;
 using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.QueriesAndCommands.Queries;
 using TaskManager.Abstractions.Services;
 using TaskManager.Modules.Management.Application.Database.Abstractions;
 using TaskManager.Modules.Management.Application.Features.Dtos;
+using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Application.Features.Queries;
 
@@ -27,15 +29,45 @@ public record GetMemberTeamsQuery(int Page = 1, int PageSize = 10) : IQuery<Pagi
             if (user == null)
                 return Result<PaginatedList<TeamDto>>.NotFound("User not found");
 
-            var teams = _dbContext.Teams.Where(x => x.TeamMembers.Any(z => z.UserId == user.Id))
-                .Skip((query.Page - 1) * query.PageSize)
-                .Take(query.PageSize).AsEnumerable()
-                .Select(TeamDto.AsDto)
-                .ToList();
+            var teams = await _dbContext.Teams
+                .Where(x => x.TeamMembers.Any(z => z.UserId == user.Id))
+                .ToPagedListAsync<Team, TeamDto>(query.Page, query.PageSize, x => TeamDto.AsDto(x), cancellationToken);
 
-            var totalTeams = await _dbContext.Teams.CountAsync(cancellationToken);
-
-            return PaginatedList<TeamDto>.Create(query.Page, query.PageSize, totalTeams, teams);
+            return Result.Ok(teams);
         }
+    }
+}
+
+public static class QueryableExtensions
+{
+    public static async Task<PaginatedList<T>> ToPagedListAsync<T>(this IQueryable<T> query, int page, int pageSize,
+        CancellationToken cancellationToken = default)
+    {
+        var count = await query.CountAsync(cancellationToken);
+
+        var results = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return new PaginatedList<T>(page, pageSize, count, results);
+    }
+
+    public static async Task<PaginatedList<TOut>> ToPagedListAsync<T, TOut>(
+        this IQueryable<T> query,
+        int page,
+        int pageSize,
+        Expression<Func<T, TOut>> mappingExpression,
+        CancellationToken cancellationToken = default)
+    {
+        var count = await query.CountAsync(cancellationToken);
+
+        var results = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(mappingExpression)
+            .ToListAsync(cancellationToken);
+
+        return new PaginatedList<TOut>(page, pageSize, count, results);
     }
 }
