@@ -5,6 +5,8 @@ using TaskManager.Modules.Management.Application.Features.Commands.Tasks;
 
 namespace TaskManager.Modules.Management.Api.Controllers;
 
+
+[Route("{teamId:guid}")]
 internal class TasksController : BaseController
 {
     private readonly ISender _sender;
@@ -14,11 +16,19 @@ internal class TasksController : BaseController
         _sender = sender;
     }
 
-    [HttpPatch("{teamId:guid}/progress")]
+    [HttpPatch("progress")]
     [Authorize]
     public async Task<IActionResult> ChangeTaskProgress([FromRoute] Guid teamId, [FromBody] ChangeTaskStatusCommand command)
     {
         var result = await _sender.Send(command with { CurrentTeamId = teamId });
+        return Ok(result);
+    }
+
+    [HttpPost("tasks/{taskId:guid}/subtasks")]
+    [Authorize]
+    public async Task<IActionResult> AddSubTask([FromRoute] Guid teamId, [FromRoute] Guid taskId, [FromBody] AddSubTaskCommand command)
+    {
+        var result = await _sender.Send(command with { TeamId = teamId, TaskId = taskId });
         return Ok(result);
     }
 }
