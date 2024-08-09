@@ -57,9 +57,6 @@ public record AddTaskCommand(
             if (team is null)
                 return Result<Guid>.NotFound("Team not found");
 
-
-            //todo:sprobowac zrobic zeby user nie musial podawac swojego id i zeby samo sie pobieralo
-
             var teamMembers = await _teamRepository.GetCountedTeamMembersAsync(team.Id, cancellationToken);
 
             var assignedUserId = request.AssignedUserId;

@@ -12,8 +12,8 @@ using TaskManager.Modules.Management.Infrastructure.Database;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ManagementsDbContext))]
-    [Migration("20240807115452_TeamProgress")]
-    partial class TeamProgress
+    [Migration("20240809000030_SubTaskItem")]
+    partial class SubTaskItem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,41 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ManagementUser", "management");
+                });
+
+            modelBuilder.Entity("TaskManager.Modules.Management.Domain.TaskItems.SubTaskItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Progress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("TaskItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TaskName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskItemId");
+
+                    b.ToTable("SubTaskItem", "management");
                 });
 
             modelBuilder.Entity("TaskManager.Modules.Management.Domain.TaskItems.TaskItem", b =>
@@ -128,6 +163,14 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.ToTable("Teams", "management");
                 });
 
+            modelBuilder.Entity("TaskManager.Modules.Management.Domain.TaskItems.SubTaskItem", b =>
+                {
+                    b.HasOne("TaskManager.Modules.Management.Domain.TaskItems.TaskItem", null)
+                        .WithMany("SubTaskItems")
+                        .HasForeignKey("TaskItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("TaskManager.Modules.Management.Domain.TeamMembers.TeamMember", b =>
                 {
                     b.HasOne("TaskManager.Modules.Management.Domain.Teams.Team", null)
@@ -165,6 +208,11 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                         });
 
                     b.Navigation("TaskItemIds");
+                });
+
+            modelBuilder.Entity("TaskManager.Modules.Management.Domain.TaskItems.TaskItem", b =>
+                {
+                    b.Navigation("SubTaskItems");
                 });
 
             modelBuilder.Entity("TaskManager.Modules.Management.Domain.Teams.Team", b =>

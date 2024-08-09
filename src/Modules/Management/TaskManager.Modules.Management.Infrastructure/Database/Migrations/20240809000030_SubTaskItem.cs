@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class TeamProgress : Migration
+    public partial class SubTaskItem : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,6 +64,31 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SubTaskItem",
+                schema: "management",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TaskName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Deadline = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Progress = table.Column<string>(type: "text", nullable: false),
+                    TaskItemId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubTaskItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubTaskItem_TaskItems_TaskItemId",
+                        column: x => x.TaskItemId,
+                        principalSchema: "management",
+                        principalTable: "TaskItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TeamMembers",
                 schema: "management",
                 columns: table => new
@@ -108,6 +133,12 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_SubTaskItem_TaskItemId",
+                schema: "management",
+                table: "SubTaskItem",
+                column: "TaskItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TeamMembers_TeamId",
                 schema: "management",
                 table: "TeamMembers",
@@ -135,7 +166,7 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 schema: "management");
 
             migrationBuilder.DropTable(
-                name: "TaskItems",
+                name: "SubTaskItem",
                 schema: "management");
 
             migrationBuilder.DropTable(
@@ -144,6 +175,10 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "TeamTaskIds",
+                schema: "management");
+
+            migrationBuilder.DropTable(
+                name: "TaskItems",
                 schema: "management");
 
             migrationBuilder.DropTable(

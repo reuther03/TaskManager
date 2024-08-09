@@ -1,8 +1,5 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using TaskManager.Abstractions.Kernel.ValueObjects.User;
+﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Modules.Management.Application.Database.Abstractions;
-using TaskManager.Modules.Management.Application.Database.Repositories;
 using TaskManager.Modules.Management.Application.Workflows;
 using TaskManager.Modules.Management.Domain.Teams;
 
@@ -23,9 +20,6 @@ public class WorkflowEngine : IWorkflowEngine
         if (team == null)
             throw new ArgumentException("Team not found");
 
-        // var tasksList = await _dbContext.Tasks.ToListAsync(cancellationToken);
-        // var tasks = tasksList.Where(x => team.TaskItemIds.Contains(x.Id)).ToList();
-
         var tasks = await _dbContext.Tasks
             .Where(x => team.TaskItemIds.Contains(x.Id))
             .ToListAsync(cancellationToken);
@@ -38,11 +32,6 @@ public class WorkflowEngine : IWorkflowEngine
                 member => member.UserId,
                 member => tasks.Count(task => task.AssignedUserId == member.UserId)
             );
-
-        foreach (var x in assignmentCounts)
-        {
-            Console.WriteLine(x.Key + " " + x.Value);
-        }
 
         var memberWithLeastTasks = assignmentCounts.OrderBy(x => x.Value).FirstOrDefault();
         if (memberWithLeastTasks.Key == null)

@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace TaskManager.Modules.Management.Application.Workflows;
+﻿namespace TaskManager.Modules.Management.Application.Workflows;
 
 public interface IWorkflowEngine
 {

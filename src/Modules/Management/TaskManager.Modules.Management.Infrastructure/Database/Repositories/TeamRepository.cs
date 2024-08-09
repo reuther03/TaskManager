@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Modules.Management.Application.Database.Repositories;
-using TaskManager.Modules.Management.Domain.TeamMembers;
 using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Infrastructure.Database.Repositories;

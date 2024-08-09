@@ -3,7 +3,6 @@ using TaskManager.Abstractions.Events.DomainEvents;
 using TaskManager.Abstractions.Kernel.Events;
 using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Abstractions;
-using TaskManager.Modules.Management.Domain.TaskItems;
 
 namespace TaskManager.Modules.Management.Application.Events.DomainEvents;
 

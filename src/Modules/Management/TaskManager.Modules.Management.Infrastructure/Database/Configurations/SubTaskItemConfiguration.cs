@@ -1,20 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskManager.Abstractions.Kernel.ValueObjects;
-using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Modules.Management.Domain.TaskItems;
 
 namespace TaskManager.Modules.Management.Infrastructure.Database.Configurations;
 
-public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
+public class SubTaskItemConfiguration : IEntityTypeConfiguration<SubTaskItem>
 {
-    public void Configure(EntityTypeBuilder<TaskItem> builder)
+    public void Configure(EntityTypeBuilder<SubTaskItem> builder)
     {
-        builder.ToTable("TaskItems");
+        builder.ToTable("SubTaskItems");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)
-            .HasConversion(x => x.Value, x => new TaskItemId(x))
             .ValueGeneratedNever();
 
         builder.Property(x => x.TaskName)
@@ -33,22 +31,8 @@ public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
         builder.Property(x => x.Deadline)
             .IsRequired();
 
-        builder.Property(x => x.Priority)
-            .IsRequired();
-
         builder.Property(x => x.Progress)
             .HasConversion<string>()
             .IsRequired();
-
-        builder.Property(x => x.AssignedUserId)
-            .HasConversion(x => x.Value, x => new UserId(x))
-            .IsRequired();
-
-        builder.HasMany(x => x.SubTaskItems)
-            .WithOne()
-            .HasForeignKey("TaskItemId")
-            .OnDelete(DeleteBehavior.Cascade);
-
-
     }
 }

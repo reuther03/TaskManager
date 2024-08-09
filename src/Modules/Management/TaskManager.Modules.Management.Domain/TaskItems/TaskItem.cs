@@ -8,8 +8,11 @@ namespace TaskManager.Modules.Management.Domain.TaskItems;
 
 public class TaskItem : AggregateRoot<TaskItemId>
 {
+    private readonly List<SubTaskItem> _subTaskItems = [];
+
     public Name TaskName { get; private set; }
     public Description Description { get; private set; }
+    public IReadOnlyList<SubTaskItem> SubTaskItems => _subTaskItems.AsReadOnly();
     public DateTime CreatedAt { get; private set; }
     public DateTime Deadline { get; private set; }
     public bool Priority { get; private set; }
@@ -70,6 +73,14 @@ public class TaskItem : AggregateRoot<TaskItemId>
     public void ChangeReminderSent()
         => ReminderSent = true;
 
-    public void AssignUser(UserId userId)
-        => AssignedUserId = userId;
+    public void AddSubTaskItem(SubTaskItem subTaskItem)
+    {
+        if (Progress == TaskProgress.Completed)
+            throw new DomainException("Task is already done.");
+
+        if (_subTaskItems.Count >= 20)
+            throw new DomainException("Task can have maximum 20 subtasks.");
+
+        _subTaskItems.Add(subTaskItem);
+    }
 }
