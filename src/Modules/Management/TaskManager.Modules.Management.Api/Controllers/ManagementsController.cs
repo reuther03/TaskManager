@@ -31,6 +31,14 @@ internal class ManagementsController : BaseController
         return Ok(result);
     }
 
+    [HttpGet("teams/search")]
+    [Authorize]
+    public async Task<IActionResult> GetFilteredTeams([FromQuery] GetFilteredTeams query)
+    {
+        var result = await _sender.Send(query);
+        return Ok(result);
+    }
+
 
     [HttpPost("create-team")]
     [Authorize]

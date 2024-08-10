@@ -1,6 +1,6 @@
 ﻿// using Microsoft.EntityFrameworkCore;
-// using Microsoft.Extensions.DependencyInjection;
-// using Microsoft.Extensions.Hosting;
+// using Microsoft.TypeExtensions.DependencyInjection;
+// using Microsoft.TypeExtensions.Hosting;
 // using TaskManager.Modules.Management.Domain.TaskItems;
 // using TaskManager.Modules.Management.Infrastructure.Database;
 //
