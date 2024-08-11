@@ -60,13 +60,9 @@ public class TaskItem : AggregateRoot<TaskItemId>
     public void ChangeStatus(TaskProgress progress)
     {
         if (Progress == TaskProgress.Completed)
-        {
-            _subTaskItems.ForEach(x => x.ChangeStatus(progress));
-
             throw new DomainException("Task is already done.");
-        }
 
-
+        _subTaskItems.ForEach(x => x.ChangeStatus(progress));
         Progress = progress;
 
         if (Progress is TaskProgress.Completed)

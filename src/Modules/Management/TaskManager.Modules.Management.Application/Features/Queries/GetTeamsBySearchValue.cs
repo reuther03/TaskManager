@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskManager.Abstractions.Kernel.Pagination;
 using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.QueriesAndCommands.Queries;
@@ -10,9 +11,9 @@ using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Application.Features.Queries;
 
-public record GetFilteredTeams(string SearchValue, int Page = 1, int PageSize = 10) : IQuery<PaginatedList<TeamDto>>
+public record GetTeamsBySearchValue(string SearchValue, int Page = 1, int PageSize = 10) : IQuery<PaginatedList<TeamDto>>
 {
-    internal sealed class Handler : IQueryHandler<GetFilteredTeams, PaginatedList<TeamDto>>
+    internal sealed class Handler : IQueryHandler<GetTeamsBySearchValue, PaginatedList<TeamDto>>
     {
         private readonly IManagementsDbContext _dbContext;
         private readonly IUserService _userService;
@@ -23,7 +24,7 @@ public record GetFilteredTeams(string SearchValue, int Page = 1, int PageSize = 
             _userService = userService;
         }
 
-        public async Task<Result<PaginatedList<TeamDto>>> Handle(GetFilteredTeams request, CancellationToken cancellationToken)
+        public async Task<Result<PaginatedList<TeamDto>>> Handle(GetTeamsBySearchValue request, CancellationToken cancellationToken)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == _userService.UserId, cancellationToken);
             if (user == null)
@@ -31,25 +32,20 @@ public record GetFilteredTeams(string SearchValue, int Page = 1, int PageSize = 
                 return Result<PaginatedList<TeamDto>>.NotFound("User not found");
             }
 
-            // Retrieve teams where the current user is a member.
             var teams = await _dbContext.Teams
                 .Where(t => t.TeamMembers.Any(member => member.UserId == user.Id))
                 .ToListAsync(cancellationToken);
 
-            // Convert the results back to IQueryable to use the extension method
-            // Perform filtering in memory using AsEnumerable to bypass EF Core translation limitations.
             var filteredTeams = teams.AsQueryable()
                 .FilterByProperty(t => t.Name.Value, request.SearchValue)
                 .AsEnumerable();
 
-            // Map the data to DTOs and paginate the results manually since in-memory.
             var teamDtos = filteredTeams
-                .Select(t => TeamDto.AsDto(t))
+                .Select(TeamDto.AsDto)
                 .Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .ToList();
 
-            // Return the final paginated result.
             return Result.Ok(new PaginatedList<TeamDto>(request.Page, request.PageSize, teams.Count, teamDtos));
         }
     }

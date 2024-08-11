@@ -33,7 +33,7 @@ internal class ManagementsController : BaseController
 
     [HttpGet("teams/search")]
     [Authorize]
-    public async Task<IActionResult> GetFilteredTeams([FromQuery] GetFilteredTeams query)
+    public async Task<IActionResult> GetFilteredTeams([FromQuery] GetTeamsBySearchValue query)
     {
         var result = await _sender.Send(query);
         return Ok(result);
