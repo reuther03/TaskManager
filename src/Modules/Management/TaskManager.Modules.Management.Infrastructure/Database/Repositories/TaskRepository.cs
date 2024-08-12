@@ -22,9 +22,9 @@ internal class TaskRepository : ITaskRepository
     public async Task AddAsync(TaskItem task, CancellationToken cancellationToken)
         => await _context.AddAsync(task, cancellationToken);
 
-    public Task Update(TaskItem task, CancellationToken cancellationToken)
+    public Task DeleteAsync(TaskItem task, CancellationToken cancellationToken)
     {
-        _context.Update(task);
+        _context.Tasks.Remove(task);
         return Task.CompletedTask;
     }
 }

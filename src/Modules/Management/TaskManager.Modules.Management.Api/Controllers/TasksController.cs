@@ -31,4 +31,12 @@ internal class TasksController : BaseController
         var result = await _sender.Send(command with { TeamId = teamId, TaskId = taskId });
         return Ok(result);
     }
+
+    [HttpDelete("tasks/{taskId:guid}")]
+    [Authorize]
+    public async Task<IActionResult> DeleteTask([FromRoute] Guid teamId, [FromRoute] Guid taskId)
+    {
+        var result = await _sender.Send(new DeleteTaskCommand(taskId, teamId));
+        return Ok(result);
+    }
 }
