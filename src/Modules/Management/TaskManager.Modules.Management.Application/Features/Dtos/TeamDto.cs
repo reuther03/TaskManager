@@ -6,7 +6,7 @@ public class TeamDto
 {
     public Guid Id { get; init; } = Guid.Empty;
     public string Name { get; init; } = null!;
-    public double TeamProgress { get; set; }
+    public double TeamProgress { get; init; }
 
     public static TeamDto AsDto(Team team)
     {

@@ -51,7 +51,7 @@ public record DeleteTaskCommand(Guid TaskId, Guid TeamId) : ICommand
             if (!team.TaskItemIds.Contains(task.Id))
                 return Result.BadRequest("Task not found in this team");
 
-            team.RemoveTask(task.Id);
+            team.RemoveTask(task);
             _taskRepository.Remove(task);
             await _unitOfWork.CommitAsync(cancellationToken);
 

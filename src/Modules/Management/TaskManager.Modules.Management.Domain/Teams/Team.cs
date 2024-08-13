@@ -18,7 +18,13 @@ public class Team : AggregateRoot<TeamId>
     public int CompletedTasks { get; set; }
     public int TotalTasks => _taskItemIds.Count;
 
-    public double Progress => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks * 100;
+
+    // public double Progress => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks * 100;
+    public double Progress
+    {
+        get => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks * 100;
+        private set { }
+    }
 
     protected Team()
     {
@@ -62,11 +68,16 @@ public class Team : AggregateRoot<TeamId>
         CompletedTasks++;
     }
 
-    public void RemoveTask(TaskItemId taskItemId)
+    public void RemoveTask(TaskItem task)
     {
-        if (!_taskItemIds.Contains(taskItemId))
+        if (!_taskItemIds.Contains(task.Id))
             throw new InvalidOperationException("Task not found");
 
-        _taskItemIds.Remove(taskItemId);
+        if (task.Progress == TaskProgress.Completed)
+        {
+            CompletedTasks--;
+        }
+
+        _taskItemIds.Remove(task.Id);
     }
 }

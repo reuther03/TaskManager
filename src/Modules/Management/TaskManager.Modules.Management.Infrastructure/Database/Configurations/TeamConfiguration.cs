@@ -21,6 +21,10 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
             .HasConversion(x => x.Value, x => new Name(x))
             .IsRequired();
 
+        builder.Property(x => x.Progress)
+            .HasPrecision(5, 2)
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
+
         builder.HasIndex(x => x.Name).IsUnique();
 
         builder.OwnsMany(x => x.TaskItemIds, ownedBuilder =>

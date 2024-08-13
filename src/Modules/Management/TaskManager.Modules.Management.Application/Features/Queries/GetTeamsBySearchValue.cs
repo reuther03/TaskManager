@@ -11,8 +11,13 @@ using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Application.Features.Queries;
 
-public record GetTeamsBySearchValue(string SearchValue, int Page = 1, int PageSize = 10) : IQuery<PaginatedList<TeamDto>>
+public record GetTeamsBySearchValue : IQuery<PaginatedList<TeamDto>>
 {
+    public string? SearchValue { get; init; } = string.Empty;
+    public double? Progress { get; init; } = null;
+    public int Page { get; init; } = 1;
+    public int PageSize { get; init; } = 10;
+
     internal sealed class Handler : IQueryHandler<GetTeamsBySearchValue, PaginatedList<TeamDto>>
     {
         private readonly IManagementsDbContext _dbContext;
@@ -28,25 +33,20 @@ public record GetTeamsBySearchValue(string SearchValue, int Page = 1, int PageSi
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == _userService.UserId, cancellationToken);
             if (user == null)
-            {
                 return Result<PaginatedList<TeamDto>>.NotFound("User not found");
-            }
 
             var teams = await _dbContext.Teams
-                .Where(t => t.TeamMembers.Any(member => member.UserId == user.Id))
+                .Where(x => x.TeamMembers.Any(y => y.UserId == user.Id))
+                .WhereIf(request.Progress.HasValue, x => x.Progress >= request.Progress)
+                .WhereIf(
+                    !string.IsNullOrWhiteSpace(request.SearchValue),
+                    x => EF.Functions.Like(x.Name, $"%{request.SearchValue}%"))
                 .ToListAsync(cancellationToken);
 
-            var filteredTeams = teams.AsQueryable()
-                .FilterByProperty(t => t.Name.Value, request.SearchValue)
-                .AsEnumerable();
+            var totalTeams = await _dbContext.Teams.CountAsync(cancellationToken);
+            var teamsDto = teams.Select(TeamDto.AsDto).ToList();
 
-            var teamDtos = filteredTeams
-                .Select(TeamDto.AsDto)
-                .Skip((request.Page - 1) * request.PageSize)
-                .Take(request.PageSize)
-                .ToList();
-
-            return Result.Ok(new PaginatedList<TeamDto>(request.Page, request.PageSize, teams.Count, teamDtos));
+            return PaginatedList<TeamDto>.Create(request.Page, request.PageSize, totalTeams, teamsDto);
         }
     }
 }
