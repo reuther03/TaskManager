@@ -61,4 +61,12 @@ public class Team : AggregateRoot<TeamId>
 
         CompletedTasks++;
     }
+
+    public void RemoveTask(TaskItemId taskItemId)
+    {
+        if (!_taskItemIds.Contains(taskItemId))
+            throw new InvalidOperationException("Task not found");
+
+        _taskItemIds.Remove(taskItemId);
+    }
 }

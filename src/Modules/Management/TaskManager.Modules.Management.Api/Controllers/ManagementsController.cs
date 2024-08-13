@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.Modules.Management.Application.Features.Commands.Tasks;
 using TaskManager.Modules.Management.Application.Features.Commands.Teams;
 using TaskManager.Modules.Management.Application.Features.Queries;
 
@@ -69,6 +70,14 @@ internal class ManagementsController : BaseController
     public async Task<IActionResult> ChangeMemberRole([FromBody] ChangeMemberRoleCommand command)
     {
         var result = await _sender.Send(command);
+        return Ok(result);
+    }
+
+    [HttpDelete("{teamId:guid}/delete-team")]
+    [Authorize]
+    public async Task<IActionResult> DeleteTeam([FromRoute] Guid teamId)
+    {
+        var result = await _sender.Send(new DeleteTeamCommand(teamId));
         return Ok(result);
     }
 }

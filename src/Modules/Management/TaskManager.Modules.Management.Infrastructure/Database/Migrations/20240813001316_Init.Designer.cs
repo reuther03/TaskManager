@@ -12,8 +12,8 @@ using TaskManager.Modules.Management.Infrastructure.Database;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ManagementsDbContext))]
-    [Migration("20240809000030_SubTaskItem")]
-    partial class SubTaskItem
+    [Migration("20240813001316_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,7 +78,7 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 
                     b.HasIndex("TaskItemId");
 
-                    b.ToTable("SubTaskItem", "management");
+                    b.ToTable("SubTaskItems", "management");
                 });
 
             modelBuilder.Entity("TaskManager.Modules.Management.Domain.TaskItems.TaskItem", b =>

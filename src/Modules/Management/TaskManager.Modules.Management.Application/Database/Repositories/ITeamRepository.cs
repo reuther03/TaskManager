@@ -9,4 +9,5 @@ public interface ITeamRepository
     Task<int> GetCountedTeamMembersAsync(TeamId id, CancellationToken cancellationToken = default);
     Task<bool> TaskInTeamAsync(TeamId teamId, TaskItemId taskId, CancellationToken cancellationToken = default);
     Task AddAsync(Team team, CancellationToken cancellationToken = default);
+    void Remove(Team team);
 }

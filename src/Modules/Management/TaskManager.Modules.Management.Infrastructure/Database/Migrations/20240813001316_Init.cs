@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class SubTaskItem : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,7 +64,7 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubTaskItem",
+                name: "SubTaskItems",
                 schema: "management",
                 columns: table => new
                 {
@@ -78,9 +78,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubTaskItem", x => x.Id);
+                    table.PrimaryKey("PK_SubTaskItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubTaskItem_TaskItems_TaskItemId",
+                        name: "FK_SubTaskItems_TaskItems_TaskItemId",
                         column: x => x.TaskItemId,
                         principalSchema: "management",
                         principalTable: "TaskItems",
@@ -133,9 +133,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubTaskItem_TaskItemId",
+                name: "IX_SubTaskItems_TaskItemId",
                 schema: "management",
-                table: "SubTaskItem",
+                table: "SubTaskItems",
                 column: "TaskItemId");
 
             migrationBuilder.CreateIndex(
@@ -166,7 +166,7 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 schema: "management");
 
             migrationBuilder.DropTable(
-                name: "SubTaskItem",
+                name: "SubTaskItems",
                 schema: "management");
 
             migrationBuilder.DropTable(

@@ -25,4 +25,7 @@ internal class TeamRepository : ITeamRepository
 
     public async Task AddAsync(Team team, CancellationToken cancellationToken = default)
         => await _teams.AddAsync(team, cancellationToken);
+
+    public void Remove(Team team)
+        => _teams.Remove(team);
 }

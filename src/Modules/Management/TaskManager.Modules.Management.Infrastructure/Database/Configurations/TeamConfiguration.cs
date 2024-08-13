@@ -33,7 +33,8 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
                 .ValueGeneratedNever()
                 .HasColumnName("TaskItemId");
 
-            builder.Metadata.FindNavigation(nameof(Team.TaskItemIds))!
+            builder.Metadata
+                .FindNavigation(nameof(Team.TaskItemIds))!
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
         });
 

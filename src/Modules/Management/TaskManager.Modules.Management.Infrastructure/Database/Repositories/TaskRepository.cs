@@ -22,9 +22,6 @@ internal class TaskRepository : ITaskRepository
     public async Task AddAsync(TaskItem task, CancellationToken cancellationToken)
         => await _context.AddAsync(task, cancellationToken);
 
-    public Task DeleteAsync(TaskItem task, CancellationToken cancellationToken)
-    {
-        _context.Tasks.Remove(task);
-        return Task.CompletedTask;
-    }
+    public void Remove(TaskItem task)
+        => _context.Remove(task);
 }
