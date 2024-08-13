@@ -14,6 +14,7 @@ public class Team : AggregateRoot<TeamId>
     public Name Name { get; private set; }
     public IReadOnlyList<TaskItemId> TaskItemIds => _taskItemIds.AsReadOnly();
     public IReadOnlyCollection<TeamMember> TeamMembers => _teamMembers.AsReadOnly();
+    public IList<string?> FileUrls { get; private set; } = new List<string?>();
 
     public int CompletedTasks { get; set; }
     public int TotalTasks => _taskItemIds.Count;
@@ -79,5 +80,13 @@ public class Team : AggregateRoot<TeamId>
         }
 
         _taskItemIds.Remove(task.Id);
+    }
+
+    public void AddFile(string file)
+    {
+        if (FileUrls.Contains(file) || FileUrls.Count >= 100)
+            throw new InvalidOperationException("File is already added");
+
+        FileUrls.Add(file);
     }
 }

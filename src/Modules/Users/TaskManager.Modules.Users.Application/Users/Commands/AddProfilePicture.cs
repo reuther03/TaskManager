@@ -30,7 +30,7 @@ public record AddProfilePicture(IFormFile File) : ICommand<string>
             if (user is null)
                 return Result<string>.Unauthorized("User not found");
 
-            var imgUrl = await _imgUploader.UploadImg(request.File);
+            var imgUrl = await _imgUploader.UploadFile(request.File);
             user.AddProfilePicture(imgUrl);
 
             await _unitOfWork.CommitAsync(cancellationToken);

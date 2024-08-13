@@ -12,8 +12,8 @@ using TaskManager.Modules.Management.Infrastructure.Database;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ManagementsDbContext))]
-    [Migration("20240813001316_Init")]
-    partial class Init
+    [Migration("20240813162739_AddedProgress")]
+    partial class AddedProgress
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,10 +150,18 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.Property<int>("CompletedTasks")
                         .HasColumnType("integer");
 
+                    b.Property<string[]>("FileUrls")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<double>("Progress")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 

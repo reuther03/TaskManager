@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class AddedProgress : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,7 +56,9 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    CompletedTasks = table.Column<int>(type: "integer", nullable: false)
+                    FileUrls = table.Column<string[]>(type: "text[]", nullable: false),
+                    CompletedTasks = table.Column<int>(type: "integer", nullable: false),
+                    Progress = table.Column<double>(type: "double precision", precision: 5, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {

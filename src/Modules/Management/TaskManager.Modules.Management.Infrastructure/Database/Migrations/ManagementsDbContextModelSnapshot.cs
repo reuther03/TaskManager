@@ -147,6 +147,10 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.Property<int>("CompletedTasks")
                         .HasColumnType("integer");
 
+                    b.Property<string[]>("FileUrls")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)

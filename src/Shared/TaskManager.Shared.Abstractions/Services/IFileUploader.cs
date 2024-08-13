@@ -2,7 +2,7 @@
 
 namespace TaskManager.Abstractions.Services;
 
-public interface IImgUploader
+public interface IFileUploader
 {
     Task<string> UploadFile(IFormFile file);
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Modules.Management.Application.Features.Commands.Tasks;
 using TaskManager.Modules.Management.Application.Features.Commands.Teams;
+using TaskManager.Modules.Management.Application.Features.Commands.Teams.Files;
 using TaskManager.Modules.Management.Application.Features.Queries;
 
 namespace TaskManager.Modules.Management.Api.Controllers;
@@ -62,6 +63,14 @@ internal class ManagementsController : BaseController
     public async Task<IActionResult> AddTask([FromRoute] Guid teamId, [FromBody] AddTaskCommand command)
     {
         var result = await _sender.Send(command with { CurrentTeamId = teamId });
+        return Ok(result);
+    }
+
+    [HttpPost("{teamId:guid}/upload-file")]
+    [Authorize]
+    public async Task<IActionResult> UploadFile([FromRoute] Guid teamId, [FromForm] UploadFileCommand command)
+    {
+        var result = await _sender.Send(command with { TeamId = teamId });
         return Ok(result);
     }
 

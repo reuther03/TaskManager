@@ -6,11 +6,11 @@ using TaskManager.Abstractions.Services;
 
 namespace TaskManager.Infrastructure.Services.CloudinaryImg;
 
-public class ImgUploader : IImgUploader
+public class FileUploader : IFileUploader
 {
     private readonly Cloudinary _cloudinary;
 
-    public ImgUploader(IOptions<CloudinaryOptions> options)
+    public FileUploader(IOptions<CloudinaryOptions> options)
     {
         var account = new Account(
             options.Value.cloud_name,
@@ -26,14 +26,14 @@ public class ImgUploader : IImgUploader
         if (file.Length is <= 0 or > 5 * 1024 * 1024) // 5 MB limit
             throw new ArgumentException("Invalid file size");
 
-        List<string> validTypes = ["image/jpeg", "image/png", "image/jpg"];
+        List<string> validTypes = ["text/plain", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf"];
         if (!validTypes.Contains(file.ContentType))
             throw new ArgumentException("Invalid file type");
 
         await using var stream = file.OpenReadStream();
-        var uploadParams = new ImageUploadParams
+        var uploadParams = new RawUploadParams
         {
-            File = new FileDescription(file.FileName, stream)
+            File = new FileDescription(file.FileName, stream),
         };
 
         var uploadResult = await _cloudinary.UploadAsync(uploadParams);
