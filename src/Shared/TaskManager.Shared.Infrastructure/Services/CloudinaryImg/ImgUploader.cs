@@ -21,7 +21,7 @@ public class ImgUploader : IImgUploader
         _cloudinary = new Cloudinary(account);
     }
 
-    public async Task<string> UploadFile(IFormFile file)
+    public async Task<string> UploadImg(IFormFile file)
     {
         if (file.Length is <= 0 or > 5 * 1024 * 1024) // 5 MB limit
             throw new ArgumentException("Invalid file size");

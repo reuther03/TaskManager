@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedProgress : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,7 +56,6 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    FileUrls = table.Column<string[]>(type: "text[]", nullable: false),
                     CompletedTasks = table.Column<int>(type: "integer", nullable: false),
                     Progress = table.Column<double>(type: "double precision", precision: 5, scale: 2, nullable: false)
                 },
@@ -86,6 +85,27 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                         column: x => x.TaskItemId,
                         principalSchema: "management",
                         principalTable: "TaskItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamFile",
+                schema: "management",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FileUrl = table.Column<string>(type: "text", nullable: false),
+                    TeamId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamFile", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TeamFile_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalSchema: "management",
+                        principalTable: "Teams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -141,6 +161,12 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 column: "TaskItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TeamFile_TeamId",
+                schema: "management",
+                table: "TeamFile",
+                column: "TeamId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TeamMembers_TeamId",
                 schema: "management",
                 table: "TeamMembers",
@@ -169,6 +195,10 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "SubTaskItems",
+                schema: "management");
+
+            migrationBuilder.DropTable(
+                name: "TeamFile",
                 schema: "management");
 
             migrationBuilder.DropTable(

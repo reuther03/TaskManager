@@ -23,10 +23,21 @@ public class FileUploader : IFileUploader
 
     public async Task<string> UploadFile(IFormFile file)
     {
-        if (file.Length is <= 0 or > 5 * 1024 * 1024) // 5 MB limit
+        if (file.Length is <= 0 or > 20 * 1024 * 1024)
             throw new ArgumentException("Invalid file size");
 
-        List<string> validTypes = ["text/plain", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf"];
+
+        List<string> validTypes =
+        [
+            "text/plain",
+            "text/csv",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/pdf",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "image/jpeg",
+            "image/png",
+            "image/jpg"
+        ];
         if (!validTypes.Contains(file.ContentType))
             throw new ArgumentException("Invalid file type");
 
@@ -34,6 +45,7 @@ public class FileUploader : IFileUploader
         var uploadParams = new RawUploadParams
         {
             File = new FileDescription(file.FileName, stream),
+            UseFilename = true
         };
 
         var uploadResult = await _cloudinary.UploadAsync(uploadParams);

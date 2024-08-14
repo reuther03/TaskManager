@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
 using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Abstractions.Services;
 using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Repositories;
+using TaskManager.Modules.Management.Domain.TeamFiles;
 
 namespace TaskManager.Modules.Management.Application.Features.Commands.Teams.Files;
 
-public record UploadFileCommand(IFormFile File, Guid TeamId) : ICommand<string>
+public record UploadFileCommand(
+    IFormFile File,
+    [property: JsonIgnore]
+    Guid TeamId) : ICommand<string>
 {
     internal sealed class Handler : ICommandHandler<UploadFileCommand, string>
     {
@@ -39,7 +44,9 @@ public record UploadFileCommand(IFormFile File, Guid TeamId) : ICommand<string>
 
             var fileUrl = await _fileUploader.UploadFile(request.File);
 
-            team.AddFile(fileUrl);
+            var teamFile = TeamFile.Create(fileUrl);
+
+            team.AddFile(teamFile);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return Result<string>.Ok(fileUrl);

@@ -1,6 +1,8 @@
-﻿using TaskManager.Abstractions.Kernel.Primitives;
+﻿using TaskManager.Abstractions.Exception;
+using TaskManager.Abstractions.Kernel.Primitives;
 using TaskManager.Abstractions.Kernel.ValueObjects;
 using TaskManager.Modules.Management.Domain.TaskItems;
+using TaskManager.Modules.Management.Domain.TeamFiles;
 using TaskManager.Modules.Management.Domain.TeamMembers;
 
 namespace TaskManager.Modules.Management.Domain.Teams;
@@ -11,16 +13,19 @@ public class Team : AggregateRoot<TeamId>
 
     private readonly List<TeamMember> _teamMembers = [];
 
+    private readonly List<TeamFile> _teamFiles = [];
+
     public Name Name { get; private set; }
     public IReadOnlyList<TaskItemId> TaskItemIds => _taskItemIds.AsReadOnly();
+
     public IReadOnlyCollection<TeamMember> TeamMembers => _teamMembers.AsReadOnly();
-    public IList<string?> FileUrls { get; private set; } = new List<string?>();
+
+    // public IList<string?> FileUrls { get; private set; } = new List<string?>();
+    public IReadOnlyCollection<TeamFile> TeamFiles => _teamFiles.AsReadOnly();
 
     public int CompletedTasks { get; set; }
     public int TotalTasks => _taskItemIds.Count;
 
-
-    // public double Progress => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks * 100;
     public double Progress
     {
         get => TotalTasks == 0 ? 0 : (double)CompletedTasks / TotalTasks * 100;
@@ -82,11 +87,14 @@ public class Team : AggregateRoot<TeamId>
         _taskItemIds.Remove(task.Id);
     }
 
-    public void AddFile(string file)
+    public void AddFile(TeamFile file)
     {
-        if (FileUrls.Contains(file) || FileUrls.Count >= 100)
-            throw new InvalidOperationException("File is already added");
+        if (_teamFiles.Count >= 100)
+            throw new DomainException("Team has reached the maximum number of files");
 
-        FileUrls.Add(file);
+        if (_teamFiles.Exists(x => x.FileUrl == file.FileUrl))
+            throw new DomainException("File already exists");
+
+        _teamFiles.Add(file);
     }
 }

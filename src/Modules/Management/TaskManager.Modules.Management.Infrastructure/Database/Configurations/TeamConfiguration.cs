@@ -46,5 +46,10 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
             .WithOne()
             .HasForeignKey("TeamId")
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.TeamFiles)
+            .WithOne()
+            .HasForeignKey("TeamId")
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

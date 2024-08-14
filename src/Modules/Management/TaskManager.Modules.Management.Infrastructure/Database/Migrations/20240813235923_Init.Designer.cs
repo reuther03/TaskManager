@@ -12,8 +12,8 @@ using TaskManager.Modules.Management.Infrastructure.Database;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ManagementsDbContext))]
-    [Migration("20240813162739_AddedProgress")]
-    partial class AddedProgress
+    [Migration("20240813235923_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,6 +120,25 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.ToTable("TaskItems", "management");
                 });
 
+            modelBuilder.Entity("TaskManager.Modules.Management.Domain.TeamFiles.TeamFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("TeamId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("TeamFile", "management");
+                });
+
             modelBuilder.Entity("TaskManager.Modules.Management.Domain.TeamMembers.TeamMember", b =>
                 {
                     b.Property<Guid>("Id")
@@ -150,10 +169,6 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.Property<int>("CompletedTasks")
                         .HasColumnType("integer");
 
-                    b.Property<string[]>("FileUrls")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -176,6 +191,14 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                     b.HasOne("TaskManager.Modules.Management.Domain.TaskItems.TaskItem", null)
                         .WithMany("SubTaskItems")
                         .HasForeignKey("TaskItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TaskManager.Modules.Management.Domain.TeamFiles.TeamFile", b =>
+                {
+                    b.HasOne("TaskManager.Modules.Management.Domain.Teams.Team", null)
+                        .WithMany("TeamFiles")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -225,6 +248,8 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("TaskManager.Modules.Management.Domain.Teams.Team", b =>
                 {
+                    b.Navigation("TeamFiles");
+
                     b.Navigation("TeamMembers");
                 });
 #pragma warning restore 612, 618
