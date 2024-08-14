@@ -45,6 +45,7 @@ public class FileUploader : IFileUploader
         var uploadParams = new RawUploadParams
         {
             File = new FileDescription(file.FileName, stream),
+            PublicId = file.FileName,
             UseFilename = true
         };
 
