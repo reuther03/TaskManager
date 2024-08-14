@@ -23,16 +23,6 @@ public record GetTeamQuery(Guid CurrentTeamId) : IQuery<TeamDetailsDto>
 
         public async Task<Result<TeamDetailsDto>> Handle(GetTeamQuery request, CancellationToken cancellationToken)
         {
-            //tak byl bug
-            // var user = await _dbContext.TeamMembers
-            //     .FirstOrDefaultAsync(x => x.UserId == _userService.UserId, cancellationToken);
-            //
-            // if (user is null)
-            //     return Result.Unauthorized<TeamDetailsDto>("User not found");
-            //
-            // if (user.TeamId != TeamId.From(request.CurrentTeamId))
-            //     return Result.BadRequest<TeamDetailsDto>("User is not a member of the team");
-
             var userId = _userService.UserId;
             var teamId = TeamId.From(request.CurrentTeamId);
 
@@ -47,6 +37,7 @@ public record GetTeamQuery(Guid CurrentTeamId) : IQuery<TeamDetailsDto>
 
             var team = await _dbContext.Teams
                 .Include(x => x.TeamMembers)
+                .Include(x => x.TeamFiles)
                 .FirstOrDefaultAsync(x => x.Id == TeamId.From(request.CurrentTeamId), cancellationToken);
 
             if (team is null)
@@ -57,7 +48,12 @@ public record GetTeamQuery(Guid CurrentTeamId) : IQuery<TeamDetailsDto>
                 .Where(x => team.TaskItemIds.Contains(x.Id))
                 .ToListAsync(cancellationToken);
 
-            var teamDetails = new TeamDetailsDto(team.Name, taskItems.Select(TaskItemIdDto.AsDto).ToList(), team.TeamMembers.Select(TeamMemberIdDto.AsDto).ToList());
+            var teamDetails = new TeamDetailsDto(
+                team.Name,
+                taskItems.Select(TaskItemIdDto.AsDto).ToList(),
+                team.TeamMembers.Select(TeamMemberIdDto.AsDto).ToList(),
+                team.TeamFiles.Select(TeamFileDto.AsDto).ToList()
+            );
 
             return Result.Ok(teamDetails);
         }
