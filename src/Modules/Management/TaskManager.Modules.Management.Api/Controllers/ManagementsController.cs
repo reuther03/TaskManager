@@ -89,4 +89,12 @@ internal class ManagementsController : BaseController
         var result = await _sender.Send(new DeleteTeamCommand(teamId));
         return Ok(result);
     }
+
+    [HttpDelete("{teamId:guid}/delete-file/{fileId:guid}")]
+    [Authorize]
+    public async Task<IActionResult> DeleteFile([FromRoute] Guid teamId, [FromRoute] Guid fileId)
+    {
+        var result = await _sender.Send(new DeleteFileCommand(fileId, teamId));
+        return Ok(result);
+    }
 }

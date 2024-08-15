@@ -1,38 +1,40 @@
-﻿using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.QueriesAndCommands.Commands;
 using TaskManager.Abstractions.Services;
 using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Repositories;
-using TaskManager.Modules.Management.Domain.TeamFiles;
 
 namespace TaskManager.Modules.Management.Application.Features.Commands.Teams.Files;
 
-public record UploadFileCommand(
-    IFormFile File,
-    [property: JsonIgnore]
-    Guid TeamId) : ICommand<string>
+public record DeleteFileCommand(Guid FileId, Guid TeamId) : ICommand<string>
 {
-    internal sealed class Handler : ICommandHandler<UploadFileCommand, string>
+    internal sealed class Handler : ICommandHandler<DeleteFileCommand, string>
     {
         private readonly ITeamRepository _teamRepository;
         private readonly ITeamMemberRepository _memberRepository;
         private readonly IUserService _userService;
         private readonly IFileUploader _fileUploader;
+        private readonly ITeamFileRepository _teamFileRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public Handler(ITeamRepository teamRepository, ITeamMemberRepository memberRepository, IUserService userService, IFileUploader fileUploader,
-            IUnitOfWork unitOfWork)
+        public Handler(
+            ITeamRepository teamRepository,
+            ITeamMemberRepository memberRepository,
+            IUserService userService,
+            IFileUploader fileUploader,
+            IUnitOfWork unitOfWork,
+            ITeamFileRepository teamFileRepository)
         {
             _teamRepository = teamRepository;
             _memberRepository = memberRepository;
             _userService = userService;
             _fileUploader = fileUploader;
             _unitOfWork = unitOfWork;
+            _teamFileRepository = teamFileRepository;
         }
 
-        public async Task<Result<string>> Handle(UploadFileCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(DeleteFileCommand request, CancellationToken cancellationToken)
         {
             var user = await _memberRepository.GetByIdAsync(_userService.UserId, cancellationToken);
             if (user is null)
@@ -45,14 +47,19 @@ public record UploadFileCommand(
             if (!await _memberRepository.MemberInTeamAsync(user.UserId, team.Id, cancellationToken))
                 return Result<string>.BadRequest("User is not team member");
 
-            var fileUrl = await _fileUploader.UploadFile(request.File);
+            var file = await _teamFileRepository.GetByIdAsync(request.FileId, cancellationToken);
+            if (file is null)
+                return Result<string>.NotFound("File not found");
 
-            var teamFile = TeamFile.Create(fileUrl, request.File.FileName);
+            if (!team.TeamFiles.Contains(file))
+                return Result<string>.BadRequest("File not found in team");
 
-            team.AddFile(teamFile);
+            _fileUploader.DeleteFile(file.FileName);
+            _teamFileRepository.Remove(file);
+            team.RemoveFile(file);
             await _unitOfWork.CommitAsync(cancellationToken);
 
-            return Result<string>.Ok(fileUrl);
+            return Result<string>.Ok("File deleted");
         }
     }
 }

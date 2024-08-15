@@ -15,7 +15,9 @@ internal class TeamRepository : ITeamRepository
     }
 
     public Task<Team?> GetByIdAsync(TeamId id, CancellationToken cancellationToken = default)
-        => _teams.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        => _teams
+            .Include(x => x.TeamFiles)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
     public Task<int> GetCountedTeamMembersAsync(TeamId id, CancellationToken cancellationToken = default)
         => _teams.Where(x => x.Id == id).SelectMany(x => x.TeamMembers).CountAsync(cancellationToken);

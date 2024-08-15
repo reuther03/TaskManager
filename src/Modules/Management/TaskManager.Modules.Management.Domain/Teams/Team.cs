@@ -92,9 +92,17 @@ public class Team : AggregateRoot<TeamId>
         if (_teamFiles.Count >= 100)
             throw new DomainException("Team has reached the maximum number of files");
 
-        if (_teamFiles.Exists(x => x.FileUrl == file.FileUrl))
+        if (_teamFiles.Contains(file))
             throw new DomainException("File already exists");
 
         _teamFiles.Add(file);
+    }
+
+    public void RemoveFile(TeamFile file)
+    {
+        if (!_teamFiles.Contains(file))
+            throw new DomainException("File not found");
+
+        _teamFiles.Remove(file);
     }
 }

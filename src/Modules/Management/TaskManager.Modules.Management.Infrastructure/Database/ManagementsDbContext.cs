@@ -2,6 +2,7 @@
 using TaskManager.Modules.Management.Application.Database.Abstractions;
 using TaskManager.Modules.Management.Domain.ManagementUsers;
 using TaskManager.Modules.Management.Domain.TaskItems;
+using TaskManager.Modules.Management.Domain.TeamFiles;
 using TaskManager.Modules.Management.Domain.TeamMembers;
 using TaskManager.Modules.Management.Domain.Teams;
 
@@ -13,6 +14,7 @@ internal sealed class ManagementsDbContext : DbContext, IManagementsDbContext
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
     public DbSet<ManagementUser> Users => Set<ManagementUser>();
     public DbSet<TeamMember> TeamMembers => Set<TeamMember>();
+    public DbSet<TeamFile> TeamFiles => Set<TeamFile>();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

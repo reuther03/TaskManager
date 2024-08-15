@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskManager.Modules.Management.Infrastructure.Database;
@@ -11,9 +12,11 @@ using TaskManager.Modules.Management.Infrastructure.Database;
 namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ManagementsDbContext))]
-    partial class ManagementsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240814160336_TeamFileDbset")]
+    partial class TeamFileDbset
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,10 +124,6 @@ namespace TaskManager.Modules.Management.Infrastructure.Database.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("FileUrl")
                         .IsRequired()

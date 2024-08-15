@@ -14,5 +14,8 @@ public class TeamFileConfiguration : IEntityTypeConfiguration<TeamFile>
 
         builder.Property(x => x.FileUrl)
             .IsRequired();
+
+        builder.Property(x => x.FileName)
+            .IsRequired();
     }
 }

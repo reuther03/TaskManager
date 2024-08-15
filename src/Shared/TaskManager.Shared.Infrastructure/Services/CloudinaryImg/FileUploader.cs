@@ -52,4 +52,16 @@ public class FileUploader : IFileUploader
         var uploadResult = await _cloudinary.UploadAsync(uploadParams);
         return uploadResult.Url.ToString();
     }
+
+    public void DeleteFile(string publicId)
+    {
+        var deleteParams = new DelResParams
+        {
+            PublicIds = [publicId],
+            Type = "upload",
+            ResourceType = ResourceType.Raw
+        };
+
+        _cloudinary.DeleteResources(deleteParams);
+    }
 }

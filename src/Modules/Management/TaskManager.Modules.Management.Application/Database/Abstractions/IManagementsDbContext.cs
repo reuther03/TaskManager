@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Modules.Management.Domain.ManagementUsers;
 using TaskManager.Modules.Management.Domain.TaskItems;
+using TaskManager.Modules.Management.Domain.TeamFiles;
 using TaskManager.Modules.Management.Domain.TeamMembers;
 using TaskManager.Modules.Management.Domain.Teams;
 
@@ -12,5 +13,6 @@ public interface IManagementsDbContext
     DbSet<TaskItem> Tasks { get; }
     DbSet<ManagementUser> Users { get; }
     DbSet<TeamMember> TeamMembers { get; }
+    DbSet<TeamFile> TeamFiles { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

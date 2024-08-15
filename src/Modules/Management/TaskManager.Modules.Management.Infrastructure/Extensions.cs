@@ -22,11 +22,11 @@ public static class Extensions
             .AddScoped<IManagementUserRepository, ManagementUserRepository>()
             .AddScoped<ITeamMemberRepository, TeamMemberRepository>()
             .AddScoped<ITaskRepository, TaskRepository>()
+            .AddScoped<ITeamFileRepository, TeamFileRepository>()
             .AddUnitOfWork<IUnitOfWork, ManagementUnitOfWork>()
             .AddScoped<IWorkflowEngine, WorkflowEngine>();
 
         services.AddHostedService<TaskDeadlineReminderJob>();
-        // services.AddHostedService<TeamProgressJob>();
 
         return services;
     }
