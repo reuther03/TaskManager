@@ -44,4 +44,12 @@ internal class UsersController : BaseController
         var result = await _sender.Send(request, cancellationToken);
         return Ok(result);
     }
+
+    [HttpDelete("delete-user")]
+    [Authorize]
+    public async Task<IActionResult> DeleteUser(DeleteUserCommand request, CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(request, cancellationToken);
+        return Ok(result);
+    }
 }

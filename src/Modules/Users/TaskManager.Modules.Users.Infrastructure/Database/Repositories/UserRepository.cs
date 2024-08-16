@@ -8,17 +8,19 @@ namespace TaskManager.Modules.Users.Infrastructure.Database.Repositories;
 internal class UserRepository : IUserRepository
 {
     private readonly UsersDbContext _context;
+    private readonly DbSet<User> _users;
 
     public UserRepository(UsersDbContext context)
     {
         _context = context;
+        _users = context.Users;
     }
 
     public Task<bool> ExistsWithEmailAsync(string email, CancellationToken cancellationToken = default)
         => _context.Users.AnyAsync(x => x.Email == email, cancellationToken);
 
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-     => await _context.Users.FirstOrDefaultAsync(x => x.Id == UserId.From(id), cancellationToken);
+        => await _context.Users.FirstOrDefaultAsync(x => x.Id == UserId.From(id), cancellationToken);
 
     public Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
         => _context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
@@ -26,4 +28,6 @@ internal class UserRepository : IUserRepository
     public async Task AddAsync(User user, CancellationToken cancellationToken = default)
         => await _context.AddAsync(user, cancellationToken);
 
+    public void Remove(User user)
+        => _users.Remove(user);
 }
