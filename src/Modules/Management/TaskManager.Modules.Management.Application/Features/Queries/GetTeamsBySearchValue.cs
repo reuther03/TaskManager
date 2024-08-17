@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskManager.Abstractions.Kernel.Pagination;
 using TaskManager.Abstractions.Kernel.Primitives.Result;
 using TaskManager.Abstractions.QueriesAndCommands.Queries;
@@ -7,7 +6,6 @@ using TaskManager.Abstractions.QueriesAndCommands.TypeExtensions;
 using TaskManager.Abstractions.Services;
 using TaskManager.Modules.Management.Application.Database.Abstractions;
 using TaskManager.Modules.Management.Application.Features.Dtos;
-using TaskManager.Modules.Management.Domain.Teams;
 
 namespace TaskManager.Modules.Management.Application.Features.Queries;
 

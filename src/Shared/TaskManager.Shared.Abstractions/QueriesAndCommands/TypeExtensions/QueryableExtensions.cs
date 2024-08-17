@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Abstractions.Kernel.Pagination;
-using TaskManager.Abstractions.Kernel.Primitives;
 
 namespace TaskManager.Abstractions.QueriesAndCommands.TypeExtensions;
 
