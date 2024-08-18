@@ -1,5 +1,4 @@
-﻿using TaskManager.Abstractions.Kernel.ValueObjects.User;
-using TaskManager.Modules.Management.Domain.TaskItems;
+﻿using TaskManager.Modules.Management.Domain.TaskItems;
 
 namespace TaskManager.Modules.Management.Application.Features.Dtos;
 

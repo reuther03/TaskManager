@@ -1,6 +1,7 @@
 ﻿using TaskManager.Abstractions.Exception;
 using TaskManager.Abstractions.Kernel.Primitives;
 using TaskManager.Abstractions.Kernel.ValueObjects;
+using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Modules.Management.Domain.TaskItems;
 using TaskManager.Modules.Management.Domain.TeamFiles;
 using TaskManager.Modules.Management.Domain.TeamMembers;
@@ -16,11 +17,9 @@ public class Team : AggregateRoot<TeamId>
     private readonly List<TeamFile> _teamFiles = [];
 
     public Name Name { get; private set; }
+
     public IReadOnlyList<TaskItemId> TaskItemIds => _taskItemIds.AsReadOnly();
-
     public IReadOnlyCollection<TeamMember> TeamMembers => _teamMembers.AsReadOnly();
-
-    // public IList<string?> FileUrls { get; private set; } = new List<string?>();
     public IReadOnlyCollection<TeamFile> TeamFiles => _teamFiles.AsReadOnly();
 
     public int CompletedTasks { get; set; }
@@ -85,6 +84,14 @@ public class Team : AggregateRoot<TeamId>
         }
 
         _taskItemIds.Remove(task.Id);
+    }
+
+    public void RemoveMember(TeamMember teamMember)
+    {
+        if (!_teamMembers.Contains(teamMember))
+            throw new DomainException("Member not found");
+
+        _teamMembers.Remove(teamMember);
     }
 
     public void AddFile(TeamFile file)

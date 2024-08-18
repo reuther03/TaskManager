@@ -1,6 +1,3 @@
-using TaskManager.Modules.Management.Domain.TaskItems;
-using TaskManager.Modules.Management.Domain.Teams;
-
 namespace TaskManager.Modules.Management.Application.Features.Dtos;
 
 public class TeamDetailsDto

@@ -18,6 +18,9 @@ internal class TeamMemberRepository : ITeamMemberRepository
     public async Task<TeamMember?> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default)
         => await _teamMembers.FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
 
+    public Task<List<TeamMember>> GetAllByIdAsync(UserId userId, CancellationToken cancellationToken = default)
+        => _teamMembers.Where(x => x.UserId == userId).ToListAsync(cancellationToken);
+
     public async Task<List<TeamMember>> GetTeamMembersAsync(TeamId id, CancellationToken cancellationToken = default)
         => await _teamMembers.Where(x => x.TeamId == id).ToListAsync(cancellationToken);
 

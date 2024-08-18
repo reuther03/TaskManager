@@ -22,9 +22,7 @@ public class UserCreatedHandler : INotificationHandler<UserCreatedEvent>
     public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
         if (await _userRepository.ExistsAsync(new UserId(notification.UserId), cancellationToken))
-        {
             return;
-        }
 
         var user = ManagementUser.Create(new UserId(notification.UserId), new Name(notification.FullName), new Email(notification.Email));
 

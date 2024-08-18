@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Abstractions.Events.DomainEvents;
 using TaskManager.Abstractions.Kernel.Events;
-using TaskManager.Modules.Management.Application.Database;
 using TaskManager.Modules.Management.Application.Database.Abstractions;
 
 namespace TaskManager.Modules.Management.Application.Events.DomainEvents;
@@ -9,12 +8,9 @@ namespace TaskManager.Modules.Management.Application.Events.DomainEvents;
 public class ChangedTaskStatusDomainEventHandler : IDomainEventHandler<TaskItemCompletedDomainEvent>
 {
     private readonly IManagementsDbContext _managementsDbContext;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public ChangedTaskStatusDomainEventHandler(IManagementsDbContext managementsDbContext, IUnitOfWork unitOfWork)
+    public ChangedTaskStatusDomainEventHandler(IManagementsDbContext managementsDbContext)
     {
         _managementsDbContext = managementsDbContext;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(TaskItemCompletedDomainEvent notification, CancellationToken cancellationToken)
