@@ -55,6 +55,7 @@ public record DeleteFileCommand(Guid FileId, Guid TeamId) : ICommand<string>
 
             _fileUploader.DeleteFile(file.FileName);
             _teamFileRepository.Remove(file);
+
             team.RemoveFile(file);
             await _unitOfWork.CommitAsync(cancellationToken);
 

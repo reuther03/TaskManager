@@ -14,13 +14,15 @@ public class UserDeletedCommand : ICommand
     {
         private readonly IUserService _userService;
         private readonly IUserRepository _userRepository;
+        private readonly IImgUploader _imgUploader;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPublisher _publisher;
 
-        public Handler(IUserService userService, IUserRepository userRepository, IUnitOfWork unitOfWork, IPublisher publisher)
+        public Handler(IUserService userService, IUserRepository userRepository, IImgUploader imgUploader, IUnitOfWork unitOfWork, IPublisher publisher)
         {
             _userService = userService;
             _userRepository = userRepository;
+            _imgUploader = imgUploader;
             _unitOfWork = unitOfWork;
             _publisher = publisher;
         }
@@ -31,6 +33,9 @@ public class UserDeletedCommand : ICommand
             if (user is null)
                 return Result.Unauthorized("User not found");
 
+
+            if (user.ProfilePicture is not null && user.ProfilePicturePublicId is not null)
+                _imgUploader.DeleteImg(user.ProfilePicturePublicId);
 
             _userRepository.Remove(user);
             await _unitOfWork.CommitAsync(cancellationToken);

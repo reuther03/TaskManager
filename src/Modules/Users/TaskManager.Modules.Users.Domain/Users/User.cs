@@ -9,6 +9,8 @@ public class User : AggregateRoot<UserId>
     public Name FullName { get; private set; }
     public Email Email { get; private set; }
     public Password Password { get; private set; }
+
+    public string? ProfilePicturePublicId { get; private set; }
     public string? ProfilePicture { get; private set; }
 
     protected User()
@@ -26,11 +28,12 @@ public class User : AggregateRoot<UserId>
     public static User Create(string fullName, string email, string password)
         => new User(UserId.New(), fullName, email, password);
 
-    public void AddProfilePicture(string profilePicture)
+    public void AddProfilePicture(string profilePicture, string publicId)
     {
         if (string.IsNullOrWhiteSpace(profilePicture) && profilePicture == ProfilePicture)
             throw new ArgumentException("Profile picture is invalid");
 
+        ProfilePicturePublicId = publicId;
         ProfilePicture = profilePicture;
     }
 }

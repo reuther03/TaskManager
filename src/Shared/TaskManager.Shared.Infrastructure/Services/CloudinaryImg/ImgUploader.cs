@@ -33,10 +33,23 @@ public class ImgUploader : IImgUploader
         await using var stream = file.OpenReadStream();
         var uploadParams = new ImageUploadParams
         {
-            File = new FileDescription(file.FileName, stream)
+            File = new FileDescription(file.FileName, stream),
+            PublicId = file.FileName
         };
 
         var uploadResult = await _cloudinary.UploadAsync(uploadParams);
         return uploadResult.Url.ToString();
+    }
+
+    public void DeleteImg(string publicId)
+    {
+        var deleteParams = new DelResParams
+        {
+            PublicIds = [publicId],
+            Type = "upload",
+            ResourceType = ResourceType.Image
+        };
+
+        _cloudinary.DeleteResources(deleteParams);
     }
 }
