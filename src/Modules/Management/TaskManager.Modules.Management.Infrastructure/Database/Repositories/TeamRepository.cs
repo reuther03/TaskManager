@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskManager.Abstractions.Kernel.ValueObjects.User;
 using TaskManager.Modules.Management.Application.Database.Repositories;
 using TaskManager.Modules.Management.Domain.TaskItems;
+using TaskManager.Modules.Management.Domain.TeamFiles;
 using TaskManager.Modules.Management.Domain.TeamMembers;
 using TaskManager.Modules.Management.Domain.Teams;
 
@@ -34,6 +34,13 @@ internal class TeamRepository : ITeamRepository
         => _teams
             .Include(x => x.TeamMembers)
             .Where(x => x.TeamMembers.Any(y => y.UserId == teamMember.UserId)).ToList();
+
+    public Task<List<TeamFile>> GetTeamFilesAsync(TeamId teamId, CancellationToken cancellationToken = default)
+        => _teams
+            .Include(x => x.TeamFiles)
+            .Where(x => x.Id == teamId)
+            .SelectMany(x => x.TeamFiles)
+            .ToListAsync(cancellationToken);
 
     public void Remove(Team team)
         => _teams.Remove(team);

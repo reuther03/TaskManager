@@ -13,17 +13,23 @@ public record DeleteTeamCommand(Guid TeamId) : ICommand
         private readonly ITeamRepository _teamRepository;
         private readonly IUserService _userService;
         private readonly ITeamMemberRepository _memberRepository;
+        private readonly IFileUploader _fileUploader;
+        private readonly ITeamFileRepository _fileRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public Handler(
             ITeamRepository teamRepository,
             IUserService userService,
             ITeamMemberRepository memberRepository,
+            IFileUploader fileUploader,
+            ITeamFileRepository fileRepository,
             IUnitOfWork unitOfWork)
         {
             _teamRepository = teamRepository;
             _userService = userService;
             _memberRepository = memberRepository;
+            _fileUploader = fileUploader;
+            _fileRepository = fileRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -39,6 +45,12 @@ public record DeleteTeamCommand(Guid TeamId) : ICommand
 
             if (!await _memberRepository.MemberInTeamAsync(user.UserId, team.Id, cancellationToken))
                 return Result.BadRequest("You are not a member of this team");
+
+            var files = await _teamRepository.GetTeamFilesAsync(team.Id, cancellationToken);
+            foreach (var file in files.Where(_ => team.TeamFiles.Count != 0))
+            {
+                _fileUploader.DeleteFile(file.FileName);
+            }
 
             _teamRepository.Remove(team);
             await _unitOfWork.CommitAsync(cancellationToken);
