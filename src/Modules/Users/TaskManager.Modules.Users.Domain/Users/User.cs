@@ -27,6 +27,12 @@ public class User : AggregateRoot<UserId>
 
     public static User Create(string fullName, string email, string password)
         => new User(UserId.New(), fullName, email, password);
+    public void Update(string fullName, string email, string profilePicture, string publicId)
+    {
+        FullName = fullName;
+        Email = email;
+        AddProfilePicture(profilePicture, publicId);
+    }
 
     public void AddProfilePicture(string profilePicture, string publicId)
     {
@@ -36,4 +42,5 @@ public class User : AggregateRoot<UserId>
         ProfilePicturePublicId = publicId;
         ProfilePicture = profilePicture;
     }
+
 }
