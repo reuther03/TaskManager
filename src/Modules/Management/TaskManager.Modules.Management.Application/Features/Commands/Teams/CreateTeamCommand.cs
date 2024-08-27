@@ -27,15 +27,9 @@ public record CreateTeamCommand(string Name) : ICommand<Guid>
 
         public async Task<Result<Guid>> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
         {
-            if (!_userService.IsAuthenticated)
-            {
-                return Result<Guid>.BadRequest("User is not authenticated");
-            }
             var user = _userRepository.GetByIdAsync(_userService.UserId, cancellationToken).Result;
             if (user is null)
-            {
                 return Result<Guid>.NotFound("User not found");
-            }
 
             var team = Team.Create(request.Name);
 

@@ -32,6 +32,14 @@ internal class ManagementsController : BaseController
         return Ok(result);
     }
 
+    [HttpGet("teams/{teamId:guid}/pdf")]
+    [Authorize]
+    public async Task<IActionResult> GetTeamPdf([FromRoute] Guid teamId)
+    {
+        var result = await _sender.Send(new GetTeamPdfCommand(teamId));
+        return Ok(result);
+    }
+
     [HttpGet("teams/search")]
     [Authorize]
     public async Task<IActionResult> GetFilteredTeams([FromQuery] GetTeamsBySearchValue query)
